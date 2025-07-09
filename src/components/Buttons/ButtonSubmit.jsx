@@ -1,7 +1,9 @@
 import "../../Pages/Auth/Shared.css";
 
-const ButtonSubmit = ({ name }) => {
-  return <input type="submit" value={name} className="_btn" />;
+const ButtonSubmit = ({ name, onClick }) => {
+  return (
+    <input type="submit" value={name} className="_btn" onClick={onClick} />
+  );
 };
 
 export default ButtonSubmit;
