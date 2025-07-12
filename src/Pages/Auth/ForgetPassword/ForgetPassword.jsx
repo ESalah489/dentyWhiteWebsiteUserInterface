@@ -1,10 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Shared.css";
 import "boxicons/css/boxicons.min.css";
 import ButtonSubmit from "../../../components/Buttons/ButtonSubmit";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import axios from "../../../api/axiosInstance";
 
 export function ForgetPassword() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+
+  const handleChange = (e) => {
+    setEmail(e.target.value);
+    setError("");
+    setSuccessMessage("");
+  };
+
+  const handleBlur = () => {
+    if (!email.trim()) {
+      setError(true);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setSuccessMessage("");
+    try {
+      const res = await axios.post("/auth/forget-password", { email });
+      setSuccessMessage(res.data.message);
+      setTimeout(() => navigate("/"), 3000);
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    }
+  };
+
   return (
     <div className="_mainContainer">
       <div className="_Container">
@@ -22,7 +53,7 @@ export function ForgetPassword() {
           </div>
         </div>
         <div className="_FormContainer">
-          <form className="_Form">
+          <form className="_Form" onSubmit={handleSubmit}>
             <div className="_field _emailField">
               <div className="_Title">
                 <img
@@ -35,18 +66,30 @@ export function ForgetPassword() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="email"
-                  className="_Email"
+                  placeholder="Email"
+                  className={`_Email ${error ? "input-error" : ""}`}
+                  value={email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                   required
                 />
-              </div>{" "}
-              <span className="_error password-error">
-                <i className="bx bx-error-circle error-icon"></i>
-                <p className="error-text">error message</p>
-              </span>
+              </div>
+              {error && (
+                <span className="_error password-error">
+                  <i
+                    className={`bx bx-error-circle error-icon ${
+                      error ? "error-iconBlur" : ""
+                    }`}
+                  ></i>
+                  <p className="error-text">{error}</p>
+                </span>
+              )}
+              {successMessage && (
+                <p className="success-text">{successMessage}</p>
+              )}
             </div>
             <div className="_inputField _button">
-              <ButtonSubmit name={"Submit"} />
+              <ButtonSubmit name={"Submit"} disabled={!email.trim()} />
             </div>
             <div className="_Link">
               <Link id="_GoToLogin" to="/login">

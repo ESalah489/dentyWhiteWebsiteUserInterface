@@ -1,10 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Shared.css";
 import "boxicons/css/boxicons.min.css";
 import ButtonSubmit from "../../../components/Buttons/ButtonSubmit";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "../../../api/axiosInstance";
 
 export function SignIn() {
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const [serverError, setServerError] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (formErrors[name] && value.trim().length > 0) {
+      setFormErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+    setServerError("");
+  };
+
+  const handleBlur = (field) => {
+    const errors = validateForm();
+    if (errors[field]) {
+      setFormErrors((prev) => ({ ...prev, [field]: errors[field] }));
+    }
+  };
+
+  const validateForm = () => {
+    const errors = {};
+    if (!formData.email.trim()) {
+      errors.email = true;
+    }
+    if (!formData.password.trim()) {
+      errors.password = true;
+    }
+    return errors;
+  };
+
+  const handleCheck = () => {
+    return !formData.email.trim() || !formData.password.trim();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setServerError("");
+    setFormErrors({});
+
+    const errors = validateForm();
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    try {
+      const res = await axios.post("/auth/login", {
+        email: formData.email,
+        password: formData.password,
+      });
+      const { token, user } = res.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      navigate("/");
+    } catch (err) {
+      const msg = err.response?.data?.message || "Login failed";
+      setServerError(msg);
+    }
+  };
+
   return (
     <div className="_mainContainer">
       <div className="_Container">
@@ -13,59 +83,87 @@ export function SignIn() {
             <img src="/src/assets/images/c2.webp" alt="teeth image" />
           </div>
           <div className="_Title">
-            <h3>Create your account</h3>
+            <h3>Welcome Back</h3>
             <p>
-              <span>"</span>&nbsp;Welcome back to where your smile begins — a
-              space designed for comfort, trust, and expert care. Step in with
-              confidence, and leave with a brighter you.&nbsp;<span>"</span>
+              <span>"</span>&nbsp;Your smile journey continues here — login to
+              your account for personalized care.&nbsp;<span>"</span>
             </p>
           </div>
         </div>
+
         <div className="_FormContainer">
-          <form className="_Form">
+          <form className="_Form" onSubmit={handleSubmit}>
+            <div className="_Title">Sign In</div>
+
             <div className="_field _emailField">
-              <div className="_Title">Sign In</div>
               <div className="_inputField">
                 <input
                   type="email"
                   name="email"
-                  placeholder="email"
-                  className="_Email"
-                  required
+                  placeholder="Email"
+                  className={`_Email ${formErrors.email ? "input-error" : ""}`}
+                  value={formData.email}
+                  onChange={handleChange}
+                  onBlur={() => handleBlur("email")}
                 />
-              </div>{" "}
-              <span className="_error password-error">
-                <i className="bx bx-error-circle error-icon"></i>
-                <p className="error-text">error message</p>
-              </span>
+              </div>
+              {formErrors.email && (
+                <span className="_error password-error">
+                  <i
+                    className={`bx bx-error-circle error-icon ${
+                      formErrors.email ? "error-iconBlur" : ""
+                    }`}
+                  ></i>
+                  <p className="error-text">{formErrors.email}</p>
+                </span>
+              )}
             </div>
+
             <div className="_field create-password">
               <div className="_inputField">
                 <input
                   type="password"
                   name="password"
-                  placeholder=" password"
-                  className="_Password"
-                  required
+                  placeholder="Password"
+                  className={`_Password ${
+                    formErrors.password ? "input-error" : ""
+                  }`}
+                  value={formData.password}
+                  onChange={handleChange}
+                  onBlur={() => handleBlur("password")}
                 />
-              </div>{" "}
+              </div>
+              {formErrors.password && (
+                <span className="_error password-error">
+                  <i
+                    className={`bx bx-error-circle error-icon ${
+                      formErrors.password ? "error-iconBlur" : ""
+                    }`}
+                  ></i>
+                  <p className="error-text">{formErrors.password}</p>
+                </span>
+              )}
+            </div>
+
+            {serverError && (
               <span className="_error password-error">
                 <i className="bx bx-error-circle error-icon"></i>
-                <p className="error-text">error message</p>
+                <p className="error-text">{serverError}</p>
               </span>
-            </div>
+            )}
+
             <div className="_inputField _button">
-              <ButtonSubmit name={"Sign In"} />
+              <ButtonSubmit name={"Sign In"} disabled={handleCheck()} />
             </div>
 
             <div className="_Link">
-              <Link id="_GoToLogin" to="/forgetpassword">Forget Password</Link>
-              <Link id="_GoToLogin" to="/register">Create An Account</Link>
+              <Link to="/forgetpassword">Forget Password?</Link>
+              <Link to="/register">Create an Account</Link>
             </div>
 
             <div className="_footerCopyRight">
               <div className="_text">
-                Copyright &copy; 2025 Generic Wihte Teeth
+                Copyright &copy; 2025 Generic White Teeth
               </div>
             </div>
           </form>

@@ -21,7 +21,7 @@
     gap: 1rem;
     background: #ffffff69;
     width: 90%;
-    height: 93vh;
+    height: 97vh;
     border-radius: 1rem;
     -webkit-border-radius: 1rem;
     -moz-border-radius: 1rem;
@@ -158,6 +158,7 @@
     font-size: 16px;
     outline: none;
     transition: border-color 0.3s;
+    margin-bottom: 0.5rem;
 }
 
 ._mainContainer ._Container ._FormContainer ._Form ._inputField input:focus {
@@ -179,7 +180,7 @@
 }
 
 ._mainContainer ._Container ._FormContainer ._Form ._error {
-    visibility: hidden;
+    visibility: visible;
     display: flex;
     flex-direction: row;
     align-items: flex-start !important;
@@ -189,6 +190,15 @@
     color: #d93025;
     align-items: center;
 }
+
+input.input-error {
+    border: 1px solid #d93025 !important;
+}
+
+.error-iconBlur {
+    display: none !important;
+}
+
 
 .error-icon {
     margin-right: 6px;
@@ -252,11 +262,12 @@
     font-size: 0.8rem;
 }
 
-._btn:disabled {
-    background-color: #cccccc;
+._btn:disabled,
+._btn.disabled {
+    background-color: var(--color-Buttons-disabled);
     cursor: not-allowed;
-    opacity: 0.6;
-    transition: background-color 0.3s ease;
+    border: 1px solid var(--color-Buttons-disabled) !important;
+
 }
 
 .Iconsss {

@@ -4,12 +4,12 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import DropdownList from "../dropdownlist/DropdownList";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
 import { Link } from "react-router";
-
+import LogOut from "../../Pages/Auth/LogOut";
+import isAuth from "../../guards/isAuth";
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [icon, setIcon] = useState(false);
-
   const afterClicked = () => setIsOpen(false);
   useEffect(() => {
     const checkScreenSize = () => {
@@ -38,7 +38,7 @@ const NavBar = () => {
     ${isScrolled ? "bg-white shadow-md" : "lg:bg-transparent bg-white"}`}
       >
         <div className="flex flex-wrap items-center justify-between max-w-screen-xl px-4 mx-auto py-5 ">
-          <a href="#" className="flex items-center border-0">
+          <Link to={"/"} className="flex items-center border-0">
             {icon ? (
               <img
                 src="/src/assets/images/logo/logo-white.webp"
@@ -52,7 +52,7 @@ const NavBar = () => {
                 alt="Logo"
               />
             )}
-          </a>
+          </Link>
 
           <div className="flex items-center lg:order-2">
             {icon ? (
@@ -64,7 +64,7 @@ const NavBar = () => {
                   className="flex gap-3"
                   style={{ width: "100%" }}
                 >
-                  <ButtonSubmit name={"Log In"} />
+                  {isAuth() ? <LogOut /> : <ButtonSubmit name={"Log In"} />}
                 </Link>
               </div>
             )}
@@ -100,12 +100,15 @@ const NavBar = () => {
                 </svg>
               )}
             </button>
-            <DropdownList
-              element={<FaRegCircleUser />}
-              items={["Profile", "Apportment", "Logout"]}
-            />
+            {isAuth() ? (
+              <DropdownList
+                element={<FaRegCircleUser />}
+                items={["Profile", "Apportment"]}
+              />
+            ) : (
+              false
+            )}
           </div>
-
           <div
             className={`${
               isOpen ? "block" : "hidden"
@@ -140,7 +143,7 @@ const NavBar = () => {
                       className="flex gap-3"
                       style={{ width: "100%" }}
                     >
-                      <ButtonSubmit name={"Log In"} />
+                      {isAuth() ? <LogOut /> : <ButtonSubmit name={"Log In"} />}
                     </Link>
                   </div>
                 </li>

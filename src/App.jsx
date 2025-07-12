@@ -15,6 +15,9 @@ import Services from "./Pages/AdminDashboard/Services/Services";
 import Appointments from "./Pages/AdminDashboard/Appointments/Appointments";
 import ClinicReviews from "./Pages/AdminDashboard/ClinicReviews/ClinicReviews";
 import DoctorsReviews from "./Pages/AdminDashboard/DoctorsReviews/DoctorsReviews";
+import RoleProtectedRoute from "./guards/RoleProtectedRoute";
+import Unauthorized from "./Pages/RolesPages/Unauthorized";
+import Notfound from "./Pages/RolesPages/Notfound";
 
 function App() {
   const location = useLocation();
@@ -40,17 +43,21 @@ function App() {
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
-        <Route path="/restpassword" element={<ResetPassword />} />
-        <Route path="/layout" element={<Layout />}>
-          <Route index element={<Navigate to="table" />} />
-          <Route path="table" element={<Status />} />
-          <Route path="clinets" element={<Clients />} />
-          <Route path="doctors" element={<Doctors />} />
-          <Route path="services" element={<Services />} />
-          <Route path="appointments" element={<Appointments />} />
-          <Route path="clinic-reviews" element={<ClinicReviews />} />
-          <Route path="doctor-reviews" element={<DoctorsReviews />} />
+        <Route path="/resetpassword/:token" element={<ResetPassword />} />
+        <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
+          <Route path="/layout" element={<Layout />}>
+            <Route index element={<Navigate to="table" />} />
+            <Route path="table" element={<Status />} />
+            <Route path="clinets" element={<Clients />} />
+            <Route path="doctors" element={<Doctors />} />
+            <Route path="services" element={<Services />} />
+            <Route path="appointments" element={<Appointments />} />
+            <Route path="clinic-reviews" element={<ClinicReviews />} />
+            <Route path="doctor-reviews" element={<DoctorsReviews />} />
+          </Route>
         </Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="*" element={<Notfound />} />
       </Routes>
       {!shouldHideNavbar && <Footer />}
     </>
