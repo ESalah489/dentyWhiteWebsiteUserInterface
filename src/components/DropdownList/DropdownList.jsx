@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { CiUser } from "react-icons/ci";
 import { CiCalendar } from "react-icons/ci";
-import { CiLogout } from "react-icons/ci";
+import { MdOutlineDashboard } from "react-icons/md";
 
 import "./DropdownList.css";
 import { Link } from "react-router";
@@ -41,7 +41,7 @@ const DropdownList = ({ element, items }) => {
                         ? "/Profile"
                         : item == "Apportment"
                         ? "/Apportment"
-                        : "/Logout"
+                        : "/layout"
                     }
                     className="block px-4 py-2 "
                   >
@@ -50,7 +50,7 @@ const DropdownList = ({ element, items }) => {
                     ) : item == "Apportment" ? (
                       <CiCalendar className="text-2xl" />
                     ) : (
-                      <CiLogout className="text-2xl" />
+                      <MdOutlineDashboard className="text-2xl" />
                     )}
                     <span>{item}</span>
                   </Link>

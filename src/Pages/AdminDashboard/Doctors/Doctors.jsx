@@ -15,10 +15,10 @@ const Doctors = () => {
             Doctors
           </h2>
           <div className="mb-6 flex justify-end " style={{ width: "100%" }}>
-            <PopupsAddDoctors/>
+            <PopupsAddDoctors />
           </div>
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
-            <AdminTables />
+            {/* <AdminTables /> */}
           </div>
         </div>
       </main>

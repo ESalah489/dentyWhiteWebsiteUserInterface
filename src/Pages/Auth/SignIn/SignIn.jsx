@@ -4,7 +4,8 @@ import "boxicons/css/boxicons.min.css";
 import ButtonSubmit from "../../../components/Buttons/ButtonSubmit";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axiosInstance";
-
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export function SignIn() {
   const navigate = useNavigate();
 
@@ -68,8 +69,12 @@ export function SignIn() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      navigate("/");
+      toast.success("login successfully");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (err) {
+      toast.error("login failed");
       const msg = err.response?.data?.message || "Login failed";
       setServerError(msg);
     }
@@ -78,6 +83,8 @@ export function SignIn() {
   return (
     <div className="_mainContainer">
       <div className="_Container">
+        <ToastContainer position="top-right" autoClose={2000} />
+
         <div className="_image">
           <div className="_Ima">
             <img src="/src/assets/images/c2.webp" alt="teeth image" />
@@ -90,11 +97,9 @@ export function SignIn() {
             </p>
           </div>
         </div>
-
         <div className="_FormContainer">
           <form className="_Form" onSubmit={handleSubmit}>
             <div className="_Title">Sign In</div>
-
             <div className="_field _emailField">
               <div className="_inputField">
                 <input

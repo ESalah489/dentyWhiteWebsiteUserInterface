@@ -12,7 +12,7 @@ function DoctorsReviews() {
           Doctors Reviews
         </h2>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <AdminTables />
+          {/* <AdminTables /> */}
         </div>
       </div>
     </main>

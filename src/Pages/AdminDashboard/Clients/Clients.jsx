@@ -1,9 +1,60 @@
-import React from "react";
 import AdminTables from "../AdminTables";
+import PopupsAddClients from "../../../components/Popups/PopupsAddClients";
+import axios from "../../../api/axiosInstance";
+import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const columns = [
+  { label: "ID", key: "_id", minWidth: 200 },
+  { label: "First Name", key: "firstName", minWidth: 150 },
+  { label: "Last Name", key: "lastName", minWidth: 150 },
+  { label: "Email", key: "email", minWidth: 150 },
+  { label: "Phone", key: "phone", minWidth: 150 },
+  { label: "Role", key: "role", minWidth: 150 },
+  { label: "Address", key: "address", minWidth: 250 },
+  { label: "Age", key: "age", minWidth: 70, align: "right" },
+  { label: "Client Work", key: "clientWork", minWidth: 150, align: "right" },
+  { label: "Actions", key: "actions", minWidth: 150, align: "right" },
+];
 
 function Clients() {
+  const [rows, setRows] = useState([]);
+  let getAllUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const formattedRows = res.data.users.map((user) => {
+        return user;
+      });
+      setRows(formattedRows);
+    } catch (error) {
+      console.error("Failed to load Data", error);
+    }
+  };
+  let DeleteUserById = async (id) => {
+    try {
+      const token = localStorage.getItem("token");
+      await axios.delete(`/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setRows((prev) => prev.filter((user) => user._id !== id));
+      toast.success("User deleted successfully");
+    } catch {
+      toast.error("Failed to delete user");
+    }
+  };
+  useEffect(() => {
+    getAllUsers();
+  }, []);
   return (
     <main className="h-full overflow-y-auto bg-white">
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="container px-6 mx-auto grid">
         <h2
           className="my-6 text-2xl font-semibold"
@@ -11,8 +62,16 @@ function Clients() {
         >
           Clients
         </h2>
+        <div className="mb-6 flex justify-end " style={{ width: "100%" }}>
+          <PopupsAddClients />
+        </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <AdminTables />
+          <AdminTables
+            columns={columns}
+            rows={rows}
+            DeleteUserById={DeleteUserById}
+          />
+          ;
         </div>
       </div>
     </main>

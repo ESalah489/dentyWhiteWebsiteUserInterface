@@ -31,6 +31,7 @@ const NavBar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+  
   return (
     <>
       <nav
@@ -103,7 +104,7 @@ const NavBar = () => {
             {isAuth() ? (
               <DropdownList
                 element={<FaRegCircleUser />}
-                items={["Profile", "Apportment"]}
+                items={["Profile", "Apportment", "Dashboard"]}
               />
             ) : (
               false
