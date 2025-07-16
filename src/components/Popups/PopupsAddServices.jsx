@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import {
-  Box,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -17,16 +16,8 @@ import {
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
-
-const dummyDoctors = [
-  { _id: "1", name: "Dr. Ahmed" },
-  { _id: "2", name: "Dr. Salma" },
-];
-
-const dummyCategories = [
-  { _id: "cat1", name: "General" },
-  { _id: "cat2", name: "Orthodontics" },
-];
+import axios from "../../api/axiosInstance";
+import { toast } from "react-toastify";
 
 function PopupsAddServices() {
   const [open, setOpen] = useState(false);
@@ -41,12 +32,32 @@ function PopupsAddServices() {
     duration: "",
     doctors: [],
     category: "",
-    image: "",
+    image: null,
   });
 
   useEffect(() => {
-    setDoctors(dummyDoctors);
-    setCategories(dummyCategories);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const [doctorRes, categoryRes] = await Promise.all([
+          axios.get("/doctor?limit=1000", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          axios.get("/category", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+        ]);
+
+        setDoctors(doctorRes.data.doctors || []);
+        setCategories(categoryRes.data || []);
+      } catch (error) {
+        console.error("Error fetching doctors/categories", error);
+        toast.error("Failed to load form options");
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleChange = (e) => {
@@ -65,10 +76,52 @@ function PopupsAddServices() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleFileChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      image: e.target.files[0],
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    setOpen(false);
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("price", formData.price);
+    data.append("sessions", formData.sessions);
+    data.append("duration", formData.duration);
+    data.append("category", formData.category);
+    if (formData.image) {
+      data.append("image", formData.image);
+    }
+    formData.doctors.forEach((docId) => data.append("doctors", docId));
+
+    try {
+      const token = localStorage.getItem("token");
+      await axios.post("/services", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      toast.success("Service created successfully!");
+      setOpen(false);
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        sessions: "",
+        duration: "",
+        doctors: [],
+        category: "",
+        image: null,
+      });
+    } catch (error) {
+      console.error("Error creating service", error);
+      toast.error("Failed to create service");
+    }
   };
 
   return (
@@ -160,17 +213,15 @@ function PopupsAddServices() {
                   selected
                     .map(
                       (id) =>
-                        doctors.find((doc) => doc._id === id)?.name || id
+                        doctors.find((doc) => doc._id === id)?.userName || id
                     )
                     .join(", ")
                 }
               >
                 {doctors.map((doctor) => (
                   <MenuItem key={doctor._id} value={doctor._id}>
-                    <Checkbox
-                      checked={formData.doctors.includes(doctor._id)}
-                    />
-                    <ListItemText primary={doctor.name} />
+                    <Checkbox checked={formData.doctors.includes(doctor._id)} />
+                    <ListItemText primary={doctor.fullName} />
                   </MenuItem>
                 ))}
               </Select>
@@ -186,18 +237,23 @@ function PopupsAddServices() {
                 {categories.map((cat) => (
                   <MenuItem key={cat._id} value={cat._id}>
                     {cat.name}
+                    {console.log(cat)}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
 
-            <TextField
-              label="Image URL"
-              name="image"
-              value={formData.image}
-              onChange={handleChange}
-              required
-            />
+            <FormControl fullWidth required>
+              <label htmlFor="image">Upload Image</label>
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                onChange={handleFileChange}
+                required
+              />
+            </FormControl>
+
             <Button type="submit" variant="contained" color="primary">
               Add Now
             </Button>

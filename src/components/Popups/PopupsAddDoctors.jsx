@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
+import axios from "../../api/axiosInstance";
 
 const allSpecializations = [
   "Dentist",
@@ -39,7 +40,6 @@ const allDays = [
 
 function PopupsAddDoctors() {
   const [open, setOpen] = useState(false);
-
   const [formData, setFormData] = useState({
     userId: "",
     specialization: [],
@@ -47,14 +47,13 @@ function PopupsAddDoctors() {
     certifications: [],
     bio: "",
     availableTimes: [],
+    profileImage: null,
+    workImages: [],
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAvailableTimeChange = (index, field, value) => {
@@ -64,19 +63,13 @@ function PopupsAddDoctors() {
       [field]: value,
       slots: updatedTimes[index].slots || [{ from: "", to: "" }],
     };
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
 
   const handleSlotChange = (dayIndex, slotIndex, field, value) => {
     const updatedTimes = [...formData.availableTimes];
     updatedTimes[dayIndex].slots[slotIndex][field] = value;
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
 
   const addAvailableDay = () => {
@@ -92,16 +85,50 @@ function PopupsAddDoctors() {
   const addSlotToDay = (dayIndex) => {
     const updatedTimes = [...formData.availableTimes];
     updatedTimes[dayIndex].slots.push({ from: "", to: "" });
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    setOpen(false);
+    try {
+      const token = localStorage.getItem("token");
+      const formDataToSend = new FormData();
+
+      formDataToSend.append("userId", formData.userId);
+      formDataToSend.append("experience", formData.experience);
+      formDataToSend.append("bio", formData.bio);
+
+      formData.specialization.forEach((item) =>
+        formDataToSend.append("specialization[]", item)
+      );
+      formData.certifications.forEach((item) =>
+        formDataToSend.append("certifications[]", item)
+      );
+      formDataToSend.append(
+        "availableTimes",
+        JSON.stringify(formData.availableTimes)
+      );
+
+      if (formData.profileImage) {
+        formDataToSend.append("profileImage", formData.profileImage);
+      }
+
+      formData.workImages.forEach((file) => {
+        formDataToSend.append("workImages", file);
+      });
+
+      const response = await axios.post("/doctor", formDataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      console.log("Doctor created:", response.data);
+      setOpen(false);
+    } catch (error) {
+      console.error("Error creating doctor:", error.response?.data || error);
+    }
   };
 
   return (
@@ -112,7 +139,6 @@ function PopupsAddDoctors() {
           onClick={() => setOpen(true)}
         />
       </div>
-
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -128,7 +154,6 @@ function PopupsAddDoctors() {
             <IoMdClose />
           </IconButton>
         </DialogTitle>
-
         <DialogContent>
           <form
             onSubmit={handleSubmit}
@@ -146,7 +171,6 @@ function PopupsAddDoctors() {
               onChange={handleChange}
               required
             />
-
             <FormControl fullWidth>
               <InputLabel>Specializations</InputLabel>
               <Select
@@ -197,7 +221,6 @@ function PopupsAddDoctors() {
                 ))}
               </Select>
             </FormControl>
-
             <TextField
               label="Bio"
               name="bio"
@@ -208,10 +231,40 @@ function PopupsAddDoctors() {
               required
             />
             <Box>
+              <Typography variant="subtitle1" mt={2}>
+                Profile Image
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    profileImage: e.target.files[0],
+                  }))
+                }
+              />
+
+              <Typography variant="subtitle1" mt={2}>
+                Work Images
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    workImages: Array.from(e.target.files),
+                  }))
+                }
+              />
+            </Box>
+
+            <Box>
               <Typography variant="h6" mb={1}>
                 Available Times
               </Typography>
-
               {formData.availableTimes.map((day, dayIndex) => (
                 <Box
                   key={dayIndex}
@@ -284,7 +337,6 @@ function PopupsAddDoctors() {
                   </Button>
                 </Box>
               ))}
-
               <Button onClick={addAvailableDay}>+ Add Day</Button>
             </Box>
 

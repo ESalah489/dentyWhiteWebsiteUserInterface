@@ -31,7 +31,7 @@ const NavBar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   return (
     <>
       <nav
@@ -122,12 +122,12 @@ const NavBar = () => {
                 </Link>
               </li>
               <li onClick={afterClicked}>
-                <Link to="/about" href="#" className="block py-2 pl-3 pr-4 ">
+                <Link to="/aboutus" className="block py-2 pl-3 pr-4 ">
                   About
                 </Link>
               </li>
               <li onClick={afterClicked}>
-                <Link to="/services" href="#" className="block py-2 pl-3 pr-4 ">
+                <Link to="/services" className="block py-2 pl-3 pr-4 ">
                   Services
                 </Link>
               </li>

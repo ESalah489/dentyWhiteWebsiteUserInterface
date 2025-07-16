@@ -9,7 +9,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-function AdminTables({ columns, rows, DeleteUserById }) {
+import Swal from "sweetalert2";
+
+function AdminTables({ columns, rows, DeleteById }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -21,17 +23,23 @@ function AdminTables({ columns, rows, DeleteUserById }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  rows = rows.map((user) => ({
-    _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phone: user.phone || "N/A",
-    role: user.role,
-    address: user.address,
-    age: user.age,
-    clientWork: user.clientWork || "N/A",
-  }));
+
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        DeleteById(id);
+      }
+    });
+  };
+
   return (
     <div className="p-2">
       <Paper
@@ -63,7 +71,6 @@ function AdminTables({ columns, rows, DeleteUserById }) {
                       const key =
                         column.key ??
                         column.label.toLowerCase().replace(/\s/g, "");
-
                       if (key === "actions") {
                         return (
                           <TableCell key={column.label} align={column.align}>
@@ -73,7 +80,7 @@ function AdminTables({ columns, rows, DeleteUserById }) {
                               </span>
                               <span
                                 className="text-xl text-red-600 cursor-pointer"
-                                onClick={() => DeleteUserById(row._id)}
+                                onClick={() => handleDelete(row._id)}
                               >
                                 <MdDelete />
                               </span>
@@ -88,6 +95,19 @@ function AdminTables({ columns, rows, DeleteUserById }) {
                         value = `${street || ""}, ${city || ""}, ${
                           country || ""
                         } (${postalCode || ""})`;
+                      } else if (key === "profileImage" || key === "image") {
+                        value = (
+                          <img
+                            src={row[key]}
+                            alt="Doctor"
+                            style={{
+                              width: 50,
+                              height: 50,
+                              borderRadius: "30%",
+                              objectFit: "cover",
+                            }}
+                          />
+                        );
                       } else {
                         value = row[key] ?? "N/A";
                       }
@@ -103,7 +123,6 @@ function AdminTables({ columns, rows, DeleteUserById }) {
             </TableBody>
           </Table>
         </TableContainer>
-
         <TablePagination
           rowsPerPageOptions={[7, 25, 100]}
           component="div"

@@ -38,7 +38,7 @@ const DropdownList = ({ element, items }) => {
                   <Link
                     to={
                       item == "Profile"
-                        ? "/Profile"
+                        ? "/profile"
                         : item == "Apportment"
                         ? "/Apportment"
                         : "/layout"

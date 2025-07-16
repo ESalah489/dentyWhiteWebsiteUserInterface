@@ -35,7 +35,7 @@ function Clients() {
       console.error("Failed to load Data", error);
     }
   };
-  let DeleteUserById = async (id) => {
+  let DeleteById = async (id) => {
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`/user/${id}`, {
@@ -66,12 +66,7 @@ function Clients() {
           <PopupsAddClients />
         </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <AdminTables
-            columns={columns}
-            rows={rows}
-            DeleteUserById={DeleteUserById}
-          />
-          ;
+          <AdminTables columns={columns} rows={rows} DeleteById={DeleteById} />;
         </div>
       </div>
     </main>

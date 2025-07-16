@@ -12,12 +12,16 @@ import Status from "./Pages/AdminDashboard/Status";
 import Clients from "./Pages/AdminDashboard/Clients/Clients";
 import Doctors from "./Pages/AdminDashboard/Doctors/Doctors";
 import Services from "./Pages/AdminDashboard/Services/Services";
+import Categories from "./Pages/AdminDashboard/Categories/Categories";
 import Appointments from "./Pages/AdminDashboard/Appointments/Appointments";
 import ClinicReviews from "./Pages/AdminDashboard/ClinicReviews/ClinicReviews";
 import DoctorsReviews from "./Pages/AdminDashboard/DoctorsReviews/DoctorsReviews";
 import RoleProtectedRoute from "./guards/RoleProtectedRoute";
 import Unauthorized from "./Pages/RolesPages/Unauthorized";
 import Notfound from "./Pages/RolesPages/Notfound";
+import Profile from "./Pages/Profiles/Profile";
+import Information from "./Pages/Profiles/Information/Information";
+import AboutUs from "./Pages/AboutUs/AboutUs";
 
 function App() {
   const location = useLocation();
@@ -27,9 +31,13 @@ function App() {
     "/layout/clinets",
     "/layout/doctors",
     "/layout/services",
+    "/layout/categories",
     "/layout/appointments",
     "/layout/clinic-reviews",
     "/layout/doctor-reviews",
+    "/profile/appointments",
+    "/profile/services",
+    "/profile/information",
   ];
   const shouldHideNavbar = hideNavbarOnRoutes.includes(
     location.pathname.toLowerCase()
@@ -40,6 +48,7 @@ function App() {
       {!shouldHideNavbar && <NavBar />}
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/aboutus" element={<AboutUs />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -51,9 +60,22 @@ function App() {
             <Route path="clinets" element={<Clients />} />
             <Route path="doctors" element={<Doctors />} />
             <Route path="services" element={<Services />} />
+            <Route path="categories" element={<Categories />} />
             <Route path="appointments" element={<Appointments />} />
             <Route path="clinic-reviews" element={<ClinicReviews />} />
             <Route path="doctor-reviews" element={<DoctorsReviews />} />
+          </Route>
+        </Route>
+        <Route
+          element={
+            <RoleProtectedRoute allowedRoles={["client", "doctor", "admin"]} />
+          }
+        >
+          <Route path="/profile" element={<Profile />}>
+            <Route index element={<Navigate to="information" />} />
+            <Route path="information" element={<Information />} />
+            <Route path="services" />
+            <Route path="appointments" />
           </Route>
         </Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
