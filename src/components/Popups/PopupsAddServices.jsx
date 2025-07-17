@@ -19,8 +19,13 @@ import ButtonSubmit from "../Buttons/ButtonSubmit";
 import axios from "../../api/axiosInstance";
 import { toast } from "react-toastify";
 
-function PopupsAddServices() {
-  const [open, setOpen] = useState(false);
+function PopupsAddServices({
+  open,
+  setOpen,
+  isEdit = false,
+  serviceData = null,
+  onSuccess,
+}) {
   const [doctors, setDoctors] = useState([]);
   const [categories, setCategories] = useState([]);
 
@@ -60,6 +65,21 @@ function PopupsAddServices() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (isEdit && serviceData) {
+      setFormData({
+        name: serviceData.name || "",
+        description: serviceData.description || "",
+        price: serviceData.price || "",
+        sessions: serviceData.sessions || "",
+        duration: serviceData.duration || "",
+        doctors: serviceData.doctors?.map((doc) => doc._id) || [],
+        category: serviceData.category?._id || serviceData.category || "",
+        image: null,
+      });
+    }
+  }, [isEdit, serviceData, open]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -93,34 +113,33 @@ function PopupsAddServices() {
     data.append("sessions", formData.sessions);
     data.append("duration", formData.duration);
     data.append("category", formData.category);
-    if (formData.image) {
-      data.append("image", formData.image);
-    }
-    formData.doctors.forEach((docId) => data.append("doctors", docId));
+    formData.doctors.forEach((docId) => data.append("doctors[]", docId));
+    if (formData.image) data.append("image", formData.image);
 
     try {
       const token = localStorage.getItem("token");
-      await axios.post("/services", data, {
+      console.log(serviceData._id);
+
+      const url = isEdit ? `/services/${serviceData._id}` : "/services";
+      const method = isEdit ? "put" : "post";
+
+      await axios[method](url, data, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
-      toast.success("Service created successfully!");
+
+      toast.success(
+        isEdit
+          ? "Service updated successfully!"
+          : "Service created successfully!"
+      );
       setOpen(false);
-      setFormData({
-        name: "",
-        description: "",
-        price: "",
-        sessions: "",
-        duration: "",
-        doctors: [],
-        category: "",
-        image: null,
-      });
+      onSuccess?.();
     } catch (error) {
-      console.error("Error creating service", error);
-      toast.error("Failed to create service");
+      console.error("Error submitting service", error);
+      toast.error("Failed to submit service");
     }
   };
 
@@ -140,7 +159,8 @@ function PopupsAddServices() {
         maxWidth="md"
       >
         <DialogTitle>
-          Add New Service
+          {isEdit ? "Edit Service" : "Add New Service"}
+
           <IconButton
             onClick={() => setOpen(false)}
             sx={{ position: "absolute", right: 8, top: 8 }}
@@ -237,25 +257,23 @@ function PopupsAddServices() {
                 {categories.map((cat) => (
                   <MenuItem key={cat._id} value={cat._id}>
                     {cat.name}
-                    {console.log(cat)}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
 
-            <FormControl fullWidth required>
+            <FormControl fullWidth>
               <label htmlFor="image">Upload Image</label>
               <input
                 type="file"
                 name="image"
                 accept="image/*"
                 onChange={handleFileChange}
-                required
               />
             </FormControl>
 
             <Button type="submit" variant="contained" color="primary">
-              Add Now
+              {isEdit ? "Update" : "Add Now"}
             </Button>
           </form>
         </DialogContent>

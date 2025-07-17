@@ -5,7 +5,6 @@ import {
   HiOutlineUserGroup,
   HiOutlineWrenchScrewdriver,
   HiOutlineCalendarDays,
-
 } from "react-icons/hi2";
 import ButtonSubmit from "../../components/Buttons/ButtonSubmit";
 import { CiLogout } from "react-icons/ci";
@@ -81,19 +80,13 @@ const SidebarContent = ({ closeSideMenu }) => (
     <ul className="mt-6">
       <SidebarItem
         icon={<HiOutlineHome />}
-        label="Dashboard"
+        label="Profile"
         to="/profile/Information"
         active
         closeSideMenu={closeSideMenu}
       />
     </ul>
-    <ul>
-      <SidebarItem
-        icon={<HiOutlineUserGroup />}
-        label="Information"
-        to="/profile/information"
-        closeSideMenu={closeSideMenu}
-      />
+    {/* <ul>
       <SidebarItem
         icon={<HiOutlineWrenchScrewdriver />}
         label="Services"
@@ -106,7 +99,7 @@ const SidebarContent = ({ closeSideMenu }) => (
         to="/profile/appointments"
         closeSideMenu={closeSideMenu}
       />{" "}
-    </ul>
+    </ul> */}
   </div>
 );
 

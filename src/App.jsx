@@ -22,6 +22,7 @@ import Notfound from "./Pages/RolesPages/Notfound";
 import Profile from "./Pages/Profiles/Profile";
 import Information from "./Pages/Profiles/Information/Information";
 import AboutUs from "./Pages/AboutUs/AboutUs";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const location = useLocation();
@@ -45,7 +46,8 @@ function App() {
 
   return (
     <>
-      {!shouldHideNavbar && <NavBar />}
+      {!shouldHideNavbar && <NavBar />}{" "}
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />

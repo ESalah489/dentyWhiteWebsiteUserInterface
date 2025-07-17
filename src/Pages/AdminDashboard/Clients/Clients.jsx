@@ -19,29 +19,21 @@ const columns = [
 
 function Clients() {
   const [rows, setRows] = useState([]);
-  let getAllUsers = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get("/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const formattedRows = res.data.users.map((user) => {
-        return user;
-      });
-      setRows(formattedRows);
-    } catch (error) {
-      console.error("Failed to load Data", error);
-    }
+  const [open, setOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
+
+  const handleEdit = (user) => {
+    setSelectedUser(user);
+    setIsEdit(true);
+    setOpen(true);
   };
-  let DeleteById = async (id) => {
+
+  const DeleteById = async (id) => {
+    const token = localStorage.getItem("token");
     try {
-      const token = localStorage.getItem("token");
       await axios.delete(`/user/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setRows((prev) => prev.filter((user) => user._id !== id));
       toast.success("User deleted successfully");
@@ -49,12 +41,25 @@ function Clients() {
       toast.error("Failed to delete user");
     }
   };
+
+  const getAllUsers = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await axios.get("/user", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setRows(res.data.users);
+    } catch {
+      toast.error("Failed to fetch users");
+    }
+  };
+
   useEffect(() => {
     getAllUsers();
   }, []);
+
   return (
     <main className="h-full overflow-y-auto bg-white">
-      <ToastContainer position="top-right" autoClose={3000} />
       <div className="container px-6 mx-auto grid">
         <h2
           className="my-6 text-2xl font-semibold"
@@ -62,11 +67,34 @@ function Clients() {
         >
           Clients
         </h2>
-        <div className="mb-6 flex justify-end " style={{ width: "100%" }}>
-          <PopupsAddClients />
+
+        <div className="mb-6 flex justify-end" style={{ width: "100%" }}>
+          <PopupsAddClients
+            open={open}
+            setOpen={setOpen}
+            isEdit={isEdit}
+            userData={selectedUser}
+            onClose={() => {
+              setOpen(false);
+              setIsEdit(false);
+              setSelectedUser(null);
+            }}
+            onSuccess={() => {
+              getAllUsers();
+              setOpen(false);
+              setIsEdit(false);
+              setSelectedUser(null);
+            }}
+          />
         </div>
+
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <AdminTables columns={columns} rows={rows} DeleteById={DeleteById} />;
+          <AdminTables
+            columns={columns}
+            rows={rows}
+            DeleteById={DeleteById}
+            onEdit={handleEdit}
+          />
         </div>
       </div>
     </main>

@@ -11,7 +11,7 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import Swal from "sweetalert2";
 
-function AdminTables({ columns, rows, DeleteById }) {
+function AdminTables({ columns, rows, DeleteById, onEdit }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -75,7 +75,10 @@ function AdminTables({ columns, rows, DeleteById }) {
                         return (
                           <TableCell key={column.label} align={column.align}>
                             <div className="flex items-center justify-end gap-1">
-                              <span className="text-xl text-blue-600 cursor-pointer">
+                              <span
+                                className="text-xl text-blue-600 cursor-pointer"
+                                onClick={() => onEdit && onEdit(row)}
+                              >
                                 <FaEdit />
                               </span>
                               <span
@@ -95,7 +98,11 @@ function AdminTables({ columns, rows, DeleteById }) {
                         value = `${street || ""}, ${city || ""}, ${
                           country || ""
                         } (${postalCode || ""})`;
-                      } else if (key === "profileImage" || key === "image") {
+                      } else if (
+                        key === "profileImage" ||
+                        key === "image" ||
+                        key === "workImages"
+                      ) {
                         value = (
                           <img
                             src={row[key]}

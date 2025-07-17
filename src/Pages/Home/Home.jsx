@@ -72,7 +72,7 @@ const Home = () => {
           </div>
         </div>
         <About />
-        <Categories/>
+        <Categories />
         <div className="_LifeShoping">
           <div className="container-fluid">
             <div
@@ -202,7 +202,6 @@ const Home = () => {
           </div>
         </div>
 
- 
         <div className="_SaleComponent _Ready">
           <div className="container-fluid">
             <div className="_Title">

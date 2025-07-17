@@ -16,6 +16,9 @@ const columns = [
 
 const Services = () => {
   const [services, setServices] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [selectedService, setSelectedService] = useState(null);
   const getAllServices = async () => {
     try {
       const { data } = await axios.get("/services?limit=100");
@@ -35,7 +38,7 @@ const Services = () => {
   let DeleteById = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`/doctor/${id}`, {
+      await axios.delete(`/services/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -46,6 +49,12 @@ const Services = () => {
       toast.error("Failed to delete service");
     }
   };
+  const handleEdit = (service) => {
+    setSelectedService(service);
+    setIsEdit(true);
+    setOpen(true);
+  };
+
   useEffect(() => {
     getAllServices();
   }, []);
@@ -62,10 +71,31 @@ const Services = () => {
           Services
         </h2>
         <div className="mb-6 flex justify-end" style={{ width: "100%" }}>
-          <PopupsAddServices />
+          <PopupsAddServices
+            open={open}
+            setOpen={setOpen}
+            isEdit={isEdit}
+            serviceData={selectedService}
+            onClose={() => {
+              setOpen(false);
+              setIsEdit(false);
+              setSelectedService(null);
+            }}
+            onSuccess={() => {
+              getAllServices();
+              setOpen(false);
+              setIsEdit(false);
+              setSelectedService(null);
+            }}
+          />{" "}
         </div>
         <div className="w-full overflow-hidden rounded-lg shadow-xs">
-          <AdminTables columns={columns} rows={services} />
+          <AdminTables
+            columns={columns}
+            rows={services}
+            DeleteById={DeleteById}
+            onEdit={handleEdit}
+          />
         </div>
       </div>
     </main>
