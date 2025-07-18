@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Dialog,
@@ -19,6 +19,8 @@ import {
 } from "@mui/material";
 import { IoMdClose } from "react-icons/io";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
+import axios from "../../api/axiosInstance";
+import { toast } from "react-toastify";
 
 const allSpecializations = [
   "Dentist",
@@ -37,9 +39,13 @@ const allDays = [
   "Saturday",
 ];
 
-function PopupsAddDoctors() {
-  const [open, setOpen] = useState(false);
-
+function PopupsAddDoctors({
+  open,
+  setOpen,
+  isEdit = false,
+  doctorData = null,
+  onSuccess,
+}) {
   const [formData, setFormData] = useState({
     userId: "",
     specialization: [],
@@ -47,14 +53,16 @@ function PopupsAddDoctors() {
     certifications: [],
     bio: "",
     availableTimes: [],
+    profileImage: null,
+    workImages: [],
+    services: [],
   });
+
+  const [allServices, setAllServices] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleAvailableTimeChange = (index, field, value) => {
@@ -64,20 +72,26 @@ function PopupsAddDoctors() {
       [field]: value,
       slots: updatedTimes[index].slots || [{ from: "", to: "" }],
     };
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
 
   const handleSlotChange = (dayIndex, slotIndex, field, value) => {
     const updatedTimes = [...formData.availableTimes];
     updatedTimes[dayIndex].slots[slotIndex][field] = value;
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const { data } = await axios.get("/services");
+        setAllServices(data.services || []);
+      } catch (err) {
+        console.error("Error fetching services:", err);
+      }
+    };
+    fetchServices();
+  }, []);
 
   const addAvailableDay = () => {
     setFormData((prev) => ({
@@ -92,16 +106,105 @@ function PopupsAddDoctors() {
   const addSlotToDay = (dayIndex) => {
     const updatedTimes = [...formData.availableTimes];
     updatedTimes[dayIndex].slots.push({ from: "", to: "" });
-    setFormData((prev) => ({
-      ...prev,
-      availableTimes: updatedTimes,
-    }));
+    setFormData((prev) => ({ ...prev, availableTimes: updatedTimes }));
   };
+  useEffect(() => {
+    if (isEdit && doctorData) {
+      console.log(doctorData);
 
-  const handleSubmit = (e) => {
+      setFormData({
+        userId: doctorData._id || "",
+        specialization: Array.isArray(doctorData.specialization)
+          ? doctorData.specialization
+          : doctorData.specialization
+          ? [doctorData.specialization]
+          : [],
+        experience: doctorData.experience || "",
+        certifications: Array.isArray(doctorData.certifications)
+          ? doctorData.certifications
+          : doctorData.certifications
+          ? [doctorData.certifications]
+          : [],
+        bio: doctorData.bio || "",
+        availableTimes: doctorData.availableTimes || [],
+        profileImage: null,
+        workImages: [],
+        services: Array.isArray(doctorData.services)
+          ? doctorData.services.map((s) => (typeof s === "object" ? s._id : s))
+          : [],
+      });
+    } else {
+      setFormData({
+        userId: "",
+        specialization: [],
+        experience: "",
+        certifications: [],
+        bio: "",
+        availableTimes: [],
+        profileImage: null,
+        workImages: [],
+        services: [],
+      });
+    }
+  }, [isEdit, doctorData, open]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    setOpen(false);
+    try {
+      const token = localStorage.getItem("token");
+      const formDataToSend = new FormData();
+
+      if (!isEdit) {
+        formDataToSend.append("userId", formData.userId);
+      }
+
+      formDataToSend.append("experience", formData.experience);
+      formDataToSend.append("bio", formData.bio);
+
+      formData.specialization.forEach((item) =>
+        formDataToSend.append("specialization[]", item)
+      );
+      formData.certifications.forEach((item) =>
+        formDataToSend.append("certifications[]", item)
+      );
+      formDataToSend.append(
+        "availableTimes",
+        JSON.stringify(formData.availableTimes)
+      );
+
+      if (formData.profileImage) {
+        formDataToSend.append("profileImage", formData.profileImage);
+      }
+
+      formData.workImages.forEach((file) =>
+        formDataToSend.append("workImages", file)
+      );
+      formData.services.forEach((id) =>
+        formDataToSend.append("services[]", id)
+      );
+
+      const url = isEdit ? `/doctor/${doctorData._id}` : "/doctor";
+      const method = isEdit ? "put" : "post";
+
+      await axios[method](url, formDataToSend, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success(
+        isEdit ? "Doctor updated successfully" : "Doctor created successfully"
+      );
+      onSuccess();
+    } catch (error) {
+      const serverErrors = error.response?.data?.errors;
+      if (Array.isArray(serverErrors)) {
+        toast.error(serverErrors.map((e) => e.message).join(" | "));
+      } else {
+        toast.error("Error submitting doctor");
+      }
+    }
   };
 
   return (
@@ -112,7 +215,6 @@ function PopupsAddDoctors() {
           onClick={() => setOpen(true)}
         />
       </div>
-
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
@@ -120,7 +222,7 @@ function PopupsAddDoctors() {
         maxWidth="md"
       >
         <DialogTitle>
-          Add New Doctor
+          {isEdit ? "Edit Doctor" : "Add New Doctor"}
           <IconButton
             onClick={() => setOpen(false)}
             sx={{ position: "absolute", right: 8, top: 8 }}
@@ -128,7 +230,6 @@ function PopupsAddDoctors() {
             <IoMdClose />
           </IconButton>
         </DialogTitle>
-
         <DialogContent>
           <form
             onSubmit={handleSubmit}
@@ -198,6 +299,36 @@ function PopupsAddDoctors() {
               </Select>
             </FormControl>
 
+            <FormControl fullWidth>
+              <InputLabel>Services</InputLabel>
+              <Select
+                multiple
+                name="services"
+                value={formData.services}
+                onChange={(e) =>
+                  setFormData((prev) => ({ ...prev, services: e.target.value }))
+                }
+                input={<OutlinedInput label="Services" />}
+                renderValue={(selected) =>
+                  selected
+                    .map((id) => {
+                      const service = allServices.find((s) => s._id === id);
+                      return service ? service.name : id;
+                    })
+                    .join(", ")
+                }
+              >
+                {allServices.map((service) => (
+                  <MenuItem key={service._id} value={service._id}>
+                    <Checkbox
+                      checked={formData.services.includes(service._id)}
+                    />
+                    <ListItemText primary={service.name} />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label="Bio"
               name="bio"
@@ -207,11 +338,42 @@ function PopupsAddDoctors() {
               rows={3}
               required
             />
+
+            <Box>
+              <Typography variant="subtitle1" mt={2}>
+                Profile Image
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    profileImage: e.target.files[0],
+                  }))
+                }
+              />
+
+              <Typography variant="subtitle1" mt={2}>
+                Work Images
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    workImages: Array.from(e.target.files),
+                  }))
+                }
+              />
+            </Box>
+
             <Box>
               <Typography variant="h6" mb={1}>
                 Available Times
               </Typography>
-
               {formData.availableTimes.map((day, dayIndex) => (
                 <Box
                   key={dayIndex}
@@ -278,18 +440,16 @@ function PopupsAddDoctors() {
                       </Grid>
                     </Grid>
                   ))}
-
                   <Button onClick={() => addSlotToDay(dayIndex)} sx={{ mt: 1 }}>
                     + Add Slot
                   </Button>
                 </Box>
               ))}
-
               <Button onClick={addAvailableDay}>+ Add Day</Button>
             </Box>
 
             <Button type="submit" variant="contained" color="primary">
-              Add Now
+              {isEdit ? "Update Now" : "Add Now"}
             </Button>
           </form>
         </DialogContent>

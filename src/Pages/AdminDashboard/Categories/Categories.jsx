@@ -1,6 +1,4 @@
-import AdminTables from "../AdminTables";
-
-const Appointments = () => {
+const Categories = () => {
   return (
     <>
       <main className="h-full overflow-y-auto bg-white">
@@ -9,10 +7,10 @@ const Appointments = () => {
             className="my-6 text-2xl font-semibold"
             style={{ color: "#10244b" }}
           >
-            Appointments
+            Categoris
           </h2>
           <div className="w-full overflow-hidden rounded-lg shadow-xs">
-            {/* <AdminTables /> */}
+            {/* <AdminTables/> */}
           </div>
         </div>
       </main>
@@ -20,4 +18,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default Categories;

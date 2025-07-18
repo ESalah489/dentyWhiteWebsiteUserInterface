@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { HiOutlineUser } from "react-icons/hi";
-import { HiOutlineHome } from "react-icons/hi2";
-import LogOut from "../Auth/LogOut";
+import { HiOutlineClipboardList, HiOutlineUser } from "react-icons/hi";
 import { FiMenu } from "react-icons/fi";
 import { Link } from "react-router";
+import LogOut from "../Auth/LogOut";
+import { HiOutlineHome } from "react-icons/hi2";
+
 const Header = ({ onToggleSidebar }) => {
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const toggleProfileMenu = () => setProfileMenuOpen(!isProfileMenuOpen);
@@ -55,6 +56,15 @@ const Header = ({ onToggleSidebar }) => {
                   >
                     <HiOutlineHome className="w-4 h-4 mr-3" />
                     <span>Home</span>
+                  </Link>
+                </li>
+                <li className="flex">
+                  <Link
+                    className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold"
+                    to={"/services"}
+                  >
+                    <HiOutlineClipboardList className="w-4 h-4 mr-3" />
+                    <span>Services</span>
                   </Link>
                 </li>
                 <li className="flex">

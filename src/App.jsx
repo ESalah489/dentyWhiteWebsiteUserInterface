@@ -12,6 +12,7 @@ import Status from "./Pages/AdminDashboard/Status";
 import Clients from "./Pages/AdminDashboard/Clients/Clients";
 import Doctors from "./Pages/AdminDashboard/Doctors/Doctors";
 import Services from "./Pages/AdminDashboard/Services/Services";
+import Categories from "./Pages/AdminDashboard/Categories/Categories";
 import Appointments from "./Pages/AdminDashboard/Appointments/Appointments";
 import ClinicReviews from "./Pages/AdminDashboard/ClinicReviews/ClinicReviews";
 import DoctorsReviews from "./Pages/AdminDashboard/DoctorsReviews/DoctorsReviews";
@@ -22,6 +23,12 @@ import DoctorDetails from "./Pages/Doctors/DoctorsDetails";
 import DoctorList from "./Pages/Doctors/DoctorsList";
 import ServicesList from "./Pages/Services/ServicesList";
 import ServicesDetails from "./Pages/Services/ServiceDetails";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import AboutUs from "./Pages/AboutUs/AboutUs";
+import Gallary from "./Pages/Gallary/Gallary";
+import ContactUs from "./Pages/ContactUs/ContactUs";
+import GalleryAdmin from "./Pages/AdminDashboard/Gallary/GallaryAdmin";
 
 
 
@@ -34,9 +41,14 @@ function App() {
     "/layout/clinets",
     "/layout/doctors",
     "/layout/services",
+    "/layout/categories",
     "/layout/appointments",
     "/layout/clinic-reviews",
     "/layout/doctor-reviews",
+    "/layout/gallaryadmin",
+    "/profile/appointments",
+    "/profile/services",
+    "/profile/information",
   ];
   const shouldHideNavbar = hideNavbarOnRoutes.includes(
     location.pathname.toLowerCase()
@@ -44,9 +56,13 @@ function App() {
 
   return (
     <>
-      {!shouldHideNavbar && <NavBar />}
+      {!shouldHideNavbar && <NavBar />}{" "}
+      <ToastContainer position="top-right" autoClose={3000} />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/gallary" element={<Gallary />} />
+        <Route path="/contactus" element={<ContactUs />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
@@ -65,6 +81,8 @@ function App() {
             <Route path="clinets" element={<Clients />} />
             <Route path="doctors" element={<Doctors />} />
             <Route path="services" element={<Services />} />
+            <Route path="gallaryadmin" element={<GalleryAdmin />} />
+            <Route path="categories" element={<Categories />} />
             <Route path="appointments" element={<Appointments />} />
             <Route path="clinic-reviews" element={<ClinicReviews />} />
             <Route path="doctor-reviews" element={<DoctorsReviews />} />

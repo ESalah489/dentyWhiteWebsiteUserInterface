@@ -3,13 +3,8 @@ import { Link } from "react-router-dom";
 import {
   HiOutlineHome,
   HiOutlineUserGroup,
-  HiOutlineUserCircle,
   HiOutlineWrenchScrewdriver,
-  HiOutlinePhoto,
   HiOutlineCalendarDays,
-  HiOutlineTag,
-  HiOutlineStar,
-  HiOutlineChatBubbleBottomCenterText,
 } from "react-icons/hi2";
 import ButtonSubmit from "../../components/Buttons/ButtonSubmit";
 import { CiLogout } from "react-icons/ci";
@@ -85,68 +80,26 @@ const SidebarContent = ({ closeSideMenu }) => (
     <ul className="mt-6">
       <SidebarItem
         icon={<HiOutlineHome />}
-        label="Dashboard"
-        to="/layout/table"
+        label="Profile"
+        to="/profile/Information"
         active
         closeSideMenu={closeSideMenu}
       />
     </ul>
-    <ul>
-      <SidebarItem
-        icon={<HiOutlineUserGroup />}
-        label="Clients"
-        to="/layout/clinets"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlineUserCircle />}
-        label="Doctors"
-        to="/layout/doctors"
-        closeSideMenu={closeSideMenu}
-      />
+    {/* <ul>
       <SidebarItem
         icon={<HiOutlineWrenchScrewdriver />}
         label="Services"
-        to="/layout/services"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlinePhoto />}
-        label="Gallary"
-        to="/layout/gallaryadmin"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlineWrenchScrewdriver />}
-        label="Categories"
-        to="/layout/categories"
+        to="/profile/services"
         closeSideMenu={closeSideMenu}
       />
       <SidebarItem
         icon={<HiOutlineCalendarDays />}
         label="Appointments"
-        to="/layout/appointments"
+        to="/profile/appointments"
         closeSideMenu={closeSideMenu}
       />{" "}
-      <SidebarItem
-        icon={<HiOutlineStar />}
-        label="Clinic Reviews"
-        to="/layout/clinic-reviews"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlineChatBubbleBottomCenterText />}
-        label="Doctors Reviews"
-        to="/layout/doctor-reviews"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlineTag />}
-        label="Offers"
-        to="/offers"
-        closeSideMenu={closeSideMenu}
-      />
-    </ul>
+    </ul> */}
   </div>
 );
 
