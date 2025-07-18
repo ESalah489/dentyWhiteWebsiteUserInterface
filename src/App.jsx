@@ -18,6 +18,13 @@ import DoctorsReviews from "./Pages/AdminDashboard/DoctorsReviews/DoctorsReviews
 import RoleProtectedRoute from "./guards/RoleProtectedRoute";
 import Unauthorized from "./Pages/RolesPages/Unauthorized";
 import Notfound from "./Pages/RolesPages/Notfound";
+import DoctorDetails from "./Pages/Doctors/DoctorsDetails";
+import DoctorList from "./Pages/Doctors/DoctorsList";
+import ServicesList from "./Pages/Services/ServicesList";
+import ServicesDetails from "./Pages/Services/ServiceDetails";
+
+
+
 
 function App() {
   const location = useLocation();
@@ -44,6 +51,13 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
+
+        <Route path="/doctor" element={<DoctorList />} />
+        <Route path="/doctor/:id" element={<DoctorDetails />} />
+        <Route path="/services" element={< ServicesList />} />
+        <Route path="/services/:id" element={<ServicesDetails />} />
+
+
         <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/layout" element={<Layout />}>
             <Route index element={<Navigate to="table" />} />
@@ -56,8 +70,12 @@ function App() {
             <Route path="doctor-reviews" element={<DoctorsReviews />} />
           </Route>
         </Route>
+
+
+
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Notfound />} />
+      
       </Routes>
       {!shouldHideNavbar && <Footer />}
     </>
