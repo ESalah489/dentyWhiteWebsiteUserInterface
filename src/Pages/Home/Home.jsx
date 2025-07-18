@@ -4,6 +4,7 @@ import ButtonSubmit from "../../components/Buttons/ButtonSubmit";
 import ScrollCounter from "../../components/ScrollCounter/ScrollCounter";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import { Link } from "react-router-dom";
 const Home = () => {
   useEffect(() => {
     AOS.init({
@@ -198,7 +199,9 @@ const Home = () => {
                   data-aos="fade-left"
                   data-aos-delay="400"
                 >
+                  <Link to="/book-appointment">
                   <ButtonSubmit name={"Book Appointment"} />
+                  </Link>
                 </div>
               </div>
             </div>
@@ -412,7 +415,9 @@ const Home = () => {
             </div>
             <div className="_BtnShop">
               <div className="_BtnReady">
-                <ButtonSubmit name={"Book Appointment"} />
+                <Link to="/book-appointment">
+                  <ButtonSubmit name={"Book Appointment"} />
+                </Link>
               </div>
             </div>
           </div>

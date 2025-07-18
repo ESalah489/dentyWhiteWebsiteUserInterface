@@ -39,15 +39,15 @@ const DropdownList = ({ element, items }) => {
                     to={
                       item == "Profile"
                         ? "/Profile"
-                        : item == "Apportment"
-                        ? "/Apportment"
+                        : item == "My Appoitments"
+                        ? "/my-appointments"
                         : "/layout"
                     }
                     className="block px-4 py-2 "
                   >
                     {item == "Profile" ? (
                       <CiUser className="text-2xl" />
-                    ) : item == "Apportment" ? (
+                    ) : item == "My Appoitments" ? (
                       <CiCalendar className="text-2xl" />
                     ) : (
                       <MdOutlineDashboard className="text-2xl" />
