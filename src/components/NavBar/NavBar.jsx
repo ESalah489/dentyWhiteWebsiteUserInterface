@@ -132,6 +132,11 @@ const NavBar = () => {
                 </Link>
               </li>
               <li onClick={afterClicked}>
+                <Link to="/doctor" href="#" className="block py-2 pl-3 pr-4 ">
+                  Doctors
+                </Link>
+              </li>
+              <li onClick={afterClicked}>
                 <Link to="/gallary" className="block py-2 pl-3 pr-4 ">
                   Gallary
                 </Link>
@@ -139,6 +144,11 @@ const NavBar = () => {
               <li onClick={afterClicked}>
                 <Link to="/contactus" className="block py-2 pl-3 pr-4 ">
                   Contact Us
+                </Link>
+              </li>
+              <li onClick={afterClicked}>
+                <Link to="contact" className="block py-2 pl-3 pr-4 ">
+                  Contact
                 </Link>
               </li>
               {icon ? (

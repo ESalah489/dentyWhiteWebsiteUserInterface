@@ -19,13 +19,19 @@ import DoctorsReviews from "./Pages/AdminDashboard/DoctorsReviews/DoctorsReviews
 import RoleProtectedRoute from "./guards/RoleProtectedRoute";
 import Unauthorized from "./Pages/RolesPages/Unauthorized";
 import Notfound from "./Pages/RolesPages/Notfound";
-import Profile from "./Pages/Profiles/Profile";
-import Information from "./Pages/Profiles/Information/Information";
-import AboutUs from "./Pages/AboutUs/AboutUs";
-import ContactUs from "./Pages/ContactUs/ContactUs";
+import DoctorDetails from "./Pages/Doctors/DoctorsDetails";
+import DoctorList from "./Pages/Doctors/DoctorsList";
+import ServicesList from "./Pages/Services/ServicesList";
+import ServicesDetails from "./Pages/Services/ServiceDetails";
 import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import AboutUs from "./Pages/AboutUs/AboutUs";
 import Gallary from "./Pages/Gallary/Gallary";
+import ContactUs from "./Pages/ContactUs/ContactUs";
 import GalleryAdmin from "./Pages/AdminDashboard/Gallary/GallaryAdmin";
+
+
+
 
 function App() {
   const location = useLocation();
@@ -61,6 +67,13 @@ function App() {
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/resetpassword/:token" element={<ResetPassword />} />
+
+        <Route path="/doctor" element={<DoctorList />} />
+        <Route path="/doctor/:id" element={<DoctorDetails />} />
+        <Route path="/services" element={< ServicesList />} />
+        <Route path="/services/:id" element={<ServicesDetails />} />
+
+
         <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/layout" element={<Layout />}>
             <Route index element={<Navigate to="table" />} />
@@ -75,20 +88,12 @@ function App() {
             <Route path="doctor-reviews" element={<DoctorsReviews />} />
           </Route>
         </Route>
-        <Route
-          element={
-            <RoleProtectedRoute allowedRoles={["client", "doctor", "admin"]} />
-          }
-        >
-          <Route path="/profile" element={<Profile />}>
-            <Route index element={<Navigate to="information" />} />
-            <Route path="information" element={<Information />} />
-            <Route path="services" />
-            <Route path="appointments" />
-          </Route>
-        </Route>
+
+
+
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Notfound />} />
+      
       </Routes>
       {!shouldHideNavbar && <Footer />}
     </>
