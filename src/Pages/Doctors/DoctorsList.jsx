@@ -5,6 +5,7 @@ import DoctorCard from "../../components/Doctors/DoctorsCard";
 import SearchBox from "../../components/Search/SearchBox";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import AOS from "aos";
 
 const DoctorList = () => {
   const [doctors, setDoctors] = useState([]);
@@ -25,18 +26,26 @@ const DoctorList = () => {
     { label: "Top Rated", value: "averageRating-desc" },
     { label: "Lowest Rated", value: "averageRating-asc" },
   ];
-
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
         const { data } = await axiosInstance.get("/doctor/specializations");
         const dynamicOptions = Array.isArray(data)
           ? data.map((spec) => ({
-            label: spec,
-            value: spec,
-          }))
+              label: spec,
+              value: spec,
+            }))
           : [];
-        setSpecializationOptions([{ label: "All", value: "" }, ...dynamicOptions]);
+        setSpecializationOptions([
+          { label: "All", value: "" },
+          ...dynamicOptions,
+        ]);
       } catch (err) {
         console.error("Error fetching specializations:", err);
       }
@@ -47,7 +56,9 @@ const DoctorList = () => {
 
   const fetchSuggestions = async (query) => {
     try {
-      const { data } = await axiosInstance.get(`/search/doctors?keyword=${query}`);
+      const { data } = await axiosInstance.get(
+        `/search/doctors?keyword=${query}`
+      );
       const suggestions = [];
       data.doctors.forEach((doc) => {
         const fullName = `Dr. ${doc.user.firstName} ${doc.user.lastName}`;
@@ -98,51 +109,62 @@ const DoctorList = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Compact Hero Section */}
-<div 
-  className="relative py-20 px-4"
-  style={{ 
-    background: 'linear-gradient(135deg, #e8f2ff 0%, #f1f8ff 100%)'
-  }}
->
-  <div className="container mx-auto text-center">
-    <p 
-      className="text-lg font-medium mb-2"
-      style={{ color: '#3b82f6' }}
-    >
-      Meet Our Dental Team
-    </p>
-    <h1 
-      className="text-4xl md:text-5xl font-bold mb-4"
-      style={{ color: '#1e293b' }}
-    >
-      Committed to Your Smile
-    </h1>
-    <p 
-      className="text-lg max-w-2xl mx-auto"
-      style={{ color: '#64748b' }}
-    >
-      Our experienced dental team is here to make every visit positive and personalized.
-    </p>
-
-    {/* Breadcrumb */}
-    <div className="flex items-center justify-center space-x-2 text-sm mt-6">
-      <span 
-        className="hover:text-blue-600 cursor-pointer transition-colors"
-        style={{ color: '#64748b' }}
-        onClick={() => navigate('/')}
+      <div
+        className="relative py-16 md:py-16 px-6 md:px-12 lg:px-24 min-h-[500px] md:min-h-[500px] lg:min-h-[500px] flex items-center"
+        style={{
+          background: "var(--color-Secound)",
+        }}
       >
-        Home
-      </span>
-      <span style={{ color: '#64748b' }}>›</span>
-      <span style={{ color: '#1e293b' }}>Dentists</span>
-    </div>
-  </div>
-</div>
+        <div className="w-full mx-auto text-center flex flex-col items-center justify-center">
+          <p
+            className="text-lg font-medium mb-2"
+            style={{ color: "#3b82f6" }}
+            data-aos="fade-down"
+            data-aos-delay="100"
+          >
+            Meet Our Dental Team
+          </p>
+          <span
+            className="flex items-center justify-center gap-0.5 text-3xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold"
+            style={{ color: "var(--color-headline)" }}
+            data-aos="fade-down"
+            data-aos-delay="200"
+          >
+            Committed to Your Smile
+          </span>
 
+          {/* Breadcrumb */}
+          <div
+            className="flex flex-wrap items-center justify-center gap-x-2 text-sm sm:text-base md:text-lg border-t py-5 my-5 w-full"
+            data-aos="fade-down"
+            data-aos-delay="300"
+          >
+            <span
+              className="hover:text-blue-600 cursor-pointer transition-colors font-medium"
+              style={{ color: "var(--color-headline)" }}
+              onClick={() => navigate("/")}
+            >
+              Home
+            </span>
+            <span
+              className="hover:text-blue-600 cursor-pointer transition-colors font-medium"
+              style={{ color: "var(--color-headline)" }}
+            >
+              ›
+            </span>
+            <span
+              className="hover:text-blue-600 cursor-pointer transition-colors font-medium"
+              style={{ color: "var(--color-headline)" }}
+            >
+              Dentists
+            </span>
+          </div>
+        </div>
+      </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Search Box */}
-        <motion.div 
+        <motion.div
           className="mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -157,32 +179,30 @@ const DoctorList = () => {
 
         {/* Mobile Filter Button */}
         <div className="lg:hidden mb-6 flex justify-end">
-  <button
-    onClick={() => setShowMobileFilters(!showMobileFilters)}
-    className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--color-white)] bg-[var(--color-Buttons)] rounded-md shadow hover:bg-[var(--color-Buttons-disabled)] transition-colors"
-  >
-    <svg
-      className="w-4 h-4"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M3 4h18M6 8h12M10 12h4M12 16h0"
-      />
-    </svg>
-                 Filters & Sort
-
-  </button>
-</div>
-
+          <button
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+            className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-[var(--color-white)] bg-[var(--color-Buttons)] rounded-md shadow hover:bg-[var(--color-Buttons-disabled)] transition-colors"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3 4h18M6 8h12M10 12h4M12 16h0"
+              />
+            </svg>
+            Filters & Sort
+          </button>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Desktop Filters */}
-          <motion.div 
+          <motion.div
             className="hidden lg:block lg:w-1/4"
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -190,7 +210,9 @@ const DoctorList = () => {
           >
             <div className="bg-white rounded-lg p-6 shadow-sm space-y-6">
               <div>
-                <label className="block mb-3 text-sm font-semibold text-gray-700">Specialization</label>
+                <label className="block mb-3 text-sm font-semibold text-gray-700">
+                  Specialization
+                </label>
                 <DropdownFilter
                   label=""
                   options={specializationOptions}
@@ -199,7 +221,9 @@ const DoctorList = () => {
                 />
               </div>
               <div>
-                <label className="block mb-3 text-sm font-semibold text-gray-700">Sort By</label>
+                <label className="block mb-3 text-sm font-semibold text-gray-700">
+                  Sort By
+                </label>
                 <DropdownFilter
                   label=""
                   options={sortOptions}
@@ -222,7 +246,9 @@ const DoctorList = () => {
               >
                 <div className="space-y-6">
                   <div>
-                    <label className="block mb-3 text-sm font-semibold text-gray-700">Specialization</label>
+                    <label className="block mb-3 text-sm font-semibold text-gray-700">
+                      Specialization
+                    </label>
                     <DropdownFilter
                       label=""
                       options={specializationOptions}
@@ -231,7 +257,9 @@ const DoctorList = () => {
                     />
                   </div>
                   <div>
-                    <label className="block mb-3 text-sm font-semibold text-gray-700">Sort By</label>
+                    <label className="block mb-3 text-sm font-semibold text-gray-700">
+                      Sort By
+                    </label>
                     <DropdownFilter
                       label=""
                       options={sortOptions}
@@ -245,31 +273,31 @@ const DoctorList = () => {
           </AnimatePresence>
 
           {/* Doctor Cards */}
-          <div className="flex-1">
+          <div className="flex-1 my-10">
             {doctors.length > 0 ? (
               <>
-               <motion.div 
-  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 0.4, delay: 0.2 }}
->
-  {doctors.map((doc, index) => (
-    <motion.div
-      key={doc._id}
-      initial={{ opacity: 0, y: 20 }} 
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: 0.05 * index }} 
-    >
-      <DoctorCard doctor={doc} />
-    </motion.div>
-  ))}
-</motion.div>
-
+                <motion.div
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 "
+                  style={{ marginTop: "-4rem" }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.2 }}
+                >
+                  {doctors.map((doc, index) => (
+                    <motion.div
+                      key={doc._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.05 * index }}
+                    >
+                      <DoctorCard doctor={doc} />
+                    </motion.div>
+                  ))}
+                </motion.div>
 
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <motion.div 
+                  <motion.div
                     className="flex justify-center mt-12 gap-2"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -282,13 +310,15 @@ const DoctorList = () => {
                     >
                       Previous
                     </button>
-                    
+
                     <div className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg">
                       Page {page} of {totalPages}
                     </div>
-                    
+
                     <button
-                      onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                      onClick={() =>
+                        setPage((p) => Math.min(totalPages, p + 1))
+                      }
                       className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={page === totalPages}
                     >
@@ -298,15 +328,25 @@ const DoctorList = () => {
                 )}
               </>
             ) : (
-              <motion.div 
+              <motion.div
                 className="text-center py-20"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
                 <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  <svg
+                    className="w-8 h-8 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    />
                   </svg>
                 </div>
                 <p className="text-lg font-medium text-gray-500">

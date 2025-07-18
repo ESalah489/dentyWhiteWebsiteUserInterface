@@ -24,15 +24,13 @@ import DoctorList from "./Pages/Doctors/DoctorsList";
 import ServicesList from "./Pages/Services/ServicesList";
 import ServicesDetails from "./Pages/Services/ServiceDetails";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import AboutUs from "./Pages/AboutUs/AboutUs";
 import Gallary from "./Pages/Gallary/Gallary";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import GalleryAdmin from "./Pages/AdminDashboard/Gallary/GallaryAdmin";
-
-
-
-
+import Profile from "./Pages/Profiles/Profile";
+import Information from "./Pages/Profiles/Information/Information";
 function App() {
   const location = useLocation();
   const hideNavbarOnRoutes = [
@@ -70,9 +68,8 @@ function App() {
 
         <Route path="/doctor" element={<DoctorList />} />
         <Route path="/doctor/:id" element={<DoctorDetails />} />
-        <Route path="/services" element={< ServicesList />} />
+        <Route path="/services" element={<ServicesList />} />
         <Route path="/services/:id" element={<ServicesDetails />} />
-
 
         <Route element={<RoleProtectedRoute allowedRoles={["admin"]} />}>
           <Route path="/layout" element={<Layout />}>
@@ -88,12 +85,20 @@ function App() {
             <Route path="doctor-reviews" element={<DoctorsReviews />} />
           </Route>
         </Route>
-
-
-
+        <Route
+          element={
+            <RoleProtectedRoute allowedRoles={["client", "doctor", "admin"]} />
+          }
+        >
+          <Route path="/profile" element={<Profile />}>
+            <Route index element={<Navigate to="information" />} />
+            <Route path="information" element={<Information />} />
+            <Route path="services" />
+            <Route path="appointments" />
+          </Route>
+        </Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Notfound />} />
-      
       </Routes>
       {!shouldHideNavbar && <Footer />}
     </>

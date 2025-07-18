@@ -146,11 +146,6 @@ const NavBar = () => {
                   Contact Us
                 </Link>
               </li>
-              <li onClick={afterClicked}>
-                <Link to="contact" className="block py-2 pl-3 pr-4 ">
-                  Contact
-                </Link>
-              </li>
               {icon ? (
                 <li onClick={afterClicked}>
                   <div className="flex gap-3 mt-2" style={{ width: "100%" }}>
