@@ -39,7 +39,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -49,7 +49,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/gallary"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -59,7 +59,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/aboutus"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -69,7 +69,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/contactus"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -84,7 +84,7 @@ const Footer = () => {
                 <ul className="mt-6 space-y-4 text-sm _LinksFooter">
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -94,7 +94,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -104,7 +104,7 @@ const Footer = () => {
 
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -113,7 +113,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -122,7 +122,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}
@@ -131,7 +131,7 @@ const Footer = () => {
                   </li>
                   <li>
                     <Link
-                      to="/"
+                      to="/services"
                       className="text-gray-700 transition hover:opacity-75"
                     >
                       {" "}

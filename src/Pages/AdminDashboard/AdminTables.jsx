@@ -101,7 +101,8 @@ function AdminTables({ columns, rows, DeleteById, onEdit }) {
                       } else if (
                         key === "profileImage" ||
                         key === "image" ||
-                        key === "workImages"
+                        key === "workImages" ||
+                        key === "imageUrl"
                       ) {
                         value = (
                           <img

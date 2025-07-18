@@ -2,14 +2,15 @@ import { useEffect } from "react";
 import "../../Pages/Home/Home.css";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
 import AOS from "aos";
+import { Link } from "react-router";
 
 const About = () => {
-    useEffect(() => {
-      AOS.init({
-        duration: 1000,
-        once: true,
-      });
-    }, []);
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   return (
     <>
       <div className="_StatusContainer">
@@ -130,13 +131,14 @@ const About = () => {
               </div>
             </div>
             <div className="_BtnShop">
-              <div
+              <Link
+                to={"/services"}
                 className="_BtnStatus"
                 data-aos="fade-left"
                 data-aos-delay="400"
               >
                 <ButtonSubmit name={"Book Appointment"} />
-              </div>
+              </Link>
             </div>
           </div>
         </div>

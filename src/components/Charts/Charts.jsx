@@ -72,7 +72,7 @@ const Charts = () => {
   }, []);
 
   return (
-    <main className="overflow-y-auto bg-white">
+    <main className="overflow-y-auto bg-white pb-10">
       <div className="w-full">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto">
@@ -92,8 +92,7 @@ const Charts = () => {
             </div>
           </div>
 
-          <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto"
-          style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
+          <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto">
             <h4 className="mb-2 text-base font-medium text-gray-700 text-center">
               Line Chart
             </h4>

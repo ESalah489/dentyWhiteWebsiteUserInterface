@@ -25,6 +25,7 @@ import AboutUs from "./Pages/AboutUs/AboutUs";
 import ContactUs from "./Pages/ContactUs/ContactUs";
 import { ToastContainer } from "react-toastify";
 import Gallary from "./Pages/Gallary/Gallary";
+import GalleryAdmin from "./Pages/AdminDashboard/Gallary/GallaryAdmin";
 
 function App() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function App() {
     "/layout/appointments",
     "/layout/clinic-reviews",
     "/layout/doctor-reviews",
+    "/layout/gallaryadmin",
     "/profile/appointments",
     "/profile/services",
     "/profile/information",
@@ -66,6 +68,7 @@ function App() {
             <Route path="clinets" element={<Clients />} />
             <Route path="doctors" element={<Doctors />} />
             <Route path="services" element={<Services />} />
+            <Route path="gallaryadmin" element={<GalleryAdmin />} />
             <Route path="categories" element={<Categories />} />
             <Route path="appointments" element={<Appointments />} />
             <Route path="clinic-reviews" element={<ClinicReviews />} />

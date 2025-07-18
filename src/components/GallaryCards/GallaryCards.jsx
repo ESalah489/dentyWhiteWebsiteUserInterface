@@ -1,30 +1,30 @@
 import { useEffect, useState } from "react";
 import "./GallaryCards.css";
 import AOS from "aos";
-
-const images = [
-  { id: 1, src: "/src/assets/images/Gallary/l1.webp", delay: 0 },
-  { id: 2, src: "/src/assets/images/Gallary/l2.webp", delay: 100 },
-  { id: 3, src: "/src/assets/images/Gallary/l3.webp", delay: 200 },
-  { id: 4, src: "/src/assets/images/Gallary/l4.webp", delay: 300 },
-  { id: 5, src: "/src/assets/images/Gallary/l5.webp", delay: 0 },
-  { id: 6, src: "/src/assets/images/Gallary/l6.webp", delay: 100 },
-  { id: 7, src: "/src/assets/images/Gallary/l7.webp", delay: 200 },
-  { id: 8, src: "/src/assets/images/Gallary/l8.webp", delay: 300 },
-  { id: 9, src: "/src/assets/images/Gallary/l9.webp", delay: 0 },
-  { id: 10, src: "/src/assets/images/Gallary/l10.webp", delay: 100 },
-  { id: 11, src: "/src/assets/images/Gallary/l11.webp", delay: 200 },
-  { id: 12, src: "/src/assets/images/Gallary/l12.webp", delay: 300 },
-];
+import "aos/dist/aos.css";
+import axios from "../../api/axiosInstance";
 
 const GallaryCards = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-    });
-  }, []);
+  const [images, setImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    AOS.init({ duration: 1000, once: true });
+
+    const fetchImages = async () => {
+      try {
+        const { data } = await axios.get("/gallery");
+        const withDelay = data.map((img, i) => ({
+          ...img,
+          delay: (i % 4) * 100,
+        }));
+        setImages(withDelay);
+      } catch (err) {
+        console.error("Failed to fetch gallery images:", err);
+      }
+    };
+    fetchImages();
+  }, []);
 
   return (
     <>
@@ -32,18 +32,19 @@ const GallaryCards = () => {
         {images.map((img) => (
           <div
             className="gallery-item"
-            key={img.id}
-            onClick={() => setSelectedImage(img.src)}
+            key={img._id}
+            onClick={() => setSelectedImage(img.imageUrl)}
             data-aos="fade-right"
             data-aos-delay={img.delay}
           >
-            <img src={img.src} alt={`Gallery ${img.id}`} />
+            <img src={img.imageUrl} alt={`Gallery ${img._id}`} />
             <div className="overlay">
               <span>View Image</span>
             </div>
           </div>
         ))}
       </div>
+
       {selectedImage && (
         <div className="popup" onClick={() => setSelectedImage(null)}>
           <img src={selectedImage} alt="Enlarged" className="popup-img" />

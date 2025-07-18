@@ -1,11 +1,21 @@
-import React from 'react'
-
 const Categories = () => {
   return (
-    <div>
-      
-    </div>
-  )
-}
+    <>
+      <main className="h-full overflow-y-auto bg-white">
+        <div className="container px-6 mx-auto grid">
+          <h2
+            className="my-6 text-2xl font-semibold"
+            style={{ color: "#10244b" }}
+          >
+            Categoris
+          </h2>
+          <div className="w-full overflow-hidden rounded-lg shadow-xs">
+            {/* <AdminTables /> */}
+          </div>
+        </div>
+      </main>
+    </>
+  );
+};
 
-export default Categories
+export default Categories;

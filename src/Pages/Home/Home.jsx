@@ -5,6 +5,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import About from "../../components/About/About";
 import Categories from "../../components/Categories/Categories";
+import { Link } from "react-router";
 const Home = () => {
   useEffect(() => {
     AOS.init({
@@ -40,9 +41,9 @@ const Home = () => {
                   </p>
                 </div>
                 <div className="_BtnShop">
-                  <div className="_Btn">
+                  <Link className="_Btn" to={"/services"}>
                     <ButtonSubmit name={"Get Started Now"} />
-                  </div>
+                  </Link>
                   <div className="_Clients">
                     <div className="_Images">
                       <img
@@ -201,7 +202,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-
         <div className="_SaleComponent _Ready">
           <div className="container-fluid">
             <div className="_Title">
@@ -214,9 +214,9 @@ const Home = () => {
               </span>
             </div>
             <div className="_BtnShop">
-              <div className="_BtnReady">
+              <Link className="_BtnReady" to={"/services"}>
                 <ButtonSubmit name={"Book Appointment"} />
-              </div>
+              </Link>
             </div>
           </div>
         </div>
