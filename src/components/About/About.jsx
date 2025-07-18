@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import "../../Pages/Home/Home.css";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
+import AOS from "aos";
 
 const About = () => {
+    useEffect(() => {
+      AOS.init({
+        duration: 1000,
+        once: true,
+      });
+    }, []);
   return (
     <>
       <div className="_StatusContainer">

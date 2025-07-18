@@ -1,7 +1,15 @@
+import { useEffect } from "react";
 import "../../Pages/Home/Home.css";
 import ScrollCounter from "../../components/ScrollCounter/ScrollCounter";
+import AOS from "aos";
 
 const Categories = () => {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   return (
     <>
       <div className="_Categories">

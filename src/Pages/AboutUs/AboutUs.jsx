@@ -2,8 +2,16 @@ import About from "../../components/About/About";
 import "./AboutUs.css";
 import { IoIosArrowForward } from "react-icons/io";
 import Categories from "../../components/Categories/Categories";
+import AOS from "aos";
+import { useEffect } from "react";
 
 function AboutUs() {
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+    });
+  }, []);
   return (
     <>
       <div className="_AboutUsContainer">

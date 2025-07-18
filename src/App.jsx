@@ -22,7 +22,9 @@ import Notfound from "./Pages/RolesPages/Notfound";
 import Profile from "./Pages/Profiles/Profile";
 import Information from "./Pages/Profiles/Information/Information";
 import AboutUs from "./Pages/AboutUs/AboutUs";
+import ContactUs from "./Pages/ContactUs/ContactUs";
 import { ToastContainer } from "react-toastify";
+import Gallary from "./Pages/Gallary/Gallary";
 
 function App() {
   const location = useLocation();
@@ -51,6 +53,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/gallary" element={<Gallary />} />
+        <Route path="/contactus" element={<ContactUs />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
         <Route path="/forgetpassword" element={<ForgetPassword />} />

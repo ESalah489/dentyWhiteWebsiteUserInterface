@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
 const Charts = () => {
   const pieRef = useRef(null);
   const lineRef = useRef(null);
-  const pieChartRef = useRef(null); 
-  const lineChartRef = useRef(null); 
+  const pieChartRef = useRef(null);
+  const lineChartRef = useRef(null);
 
   useEffect(() => {
     if (pieChartRef.current) pieChartRef.current.destroy();
@@ -21,7 +21,7 @@ const Charts = () => {
             label: "Dataset 1",
           },
         ],
-        labels: ["Shirts", "Shoes", "Bags"],
+        labels: ["Appointments", "Services", "reviwes"],
       },
       options: {
         responsive: true,
@@ -73,7 +73,7 @@ const Charts = () => {
 
   return (
     <main className="overflow-y-auto bg-white">
-      <div className="w-full mx-auto">
+      <div className="w-full">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto">
             <h4 className="mb-2 text-base font-medium text-gray-700 text-center">
@@ -86,13 +86,14 @@ const Charts = () => {
               ></canvas>
             </div>
             <div className="flex justify-center mt-3 space-x-3 text-xs text-gray-600">
-              <Legend color="bg-blue-800" label="Shirts" />
-              <Legend color="bg-blue-400" label="Shoes" />
-              <Legend color="bg-blue-600" label="Bags" />
+              <Legend color="bg-blue-800" label="Appointments" />
+              <Legend color="bg-blue-400" label="Services" />
+              <Legend color="bg-blue-600" label="Reviews" />
             </div>
           </div>
 
-          <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto">
+          <div className="p-3 bg-gray-100 rounded-lg shadow w-full [sm]:max-w-25 mx-auto"
+          style={{ boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px" }}>
             <h4 className="mb-2 text-base font-medium text-gray-700 text-center">
               Line Chart
             </h4>
