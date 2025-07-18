@@ -14,7 +14,13 @@ const DoctorSelect = ({ selectedService, selectedDoctor, setSelectedDoctor }) =>
         const fetchedDoctors = res.data.doctors || [];
         setDoctors(fetchedDoctors);
 
-        setSelectedDoctor(""); 
+        // Only clear the selected doctor if it's not in the new list of doctors
+        if (selectedDoctor) {
+          const doctorExists = fetchedDoctors.some(doc => doc._id === selectedDoctor);
+          if (!doctorExists) {
+            setSelectedDoctor(""); 
+          }
+        }
       } catch (err) {
         console.error("❌ Failed to fetch doctors", err);
         setDoctors([]);
@@ -23,7 +29,7 @@ const DoctorSelect = ({ selectedService, selectedDoctor, setSelectedDoctor }) =>
     };
 
     fetchDoctors();
-  }, [selectedService]);
+  }, [selectedService, selectedDoctor, setSelectedDoctor]);
 
   return (
     <FormControl fullWidth margin="normal" disabled={!selectedService}>

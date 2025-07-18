@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -14,9 +14,15 @@ import { IoMdClose } from "react-icons/io";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-function PopupsAddClients() {
-  const [open, setOpen] = useState(false);
 
+function PopupsAddClients({
+  isEdit = false,
+  userData = null,
+  onSuccess,
+  onClose,
+  open,
+  setOpen,
+}) {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -34,9 +40,40 @@ function PopupsAddClients() {
     },
   });
 
+  useEffect(() => {
+    if (isEdit && userData) {
+      setFormData({
+        ...userData,
+        password: "",
+        address: {
+          city: userData?.address?.city || "",
+          street: userData?.address?.street || "",
+          country: userData?.address?.country || "",
+          postalCode: userData?.address?.postalCode || "",
+        },
+      });
+    } else {
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        phone: "",
+        role: "client",
+        age: "",
+        clientWork: "",
+        address: {
+          city: "",
+          street: "",
+          country: "",
+          postalCode: "",
+        },
+      });
+    }
+  }, [isEdit, userData, open]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-
     if (["city", "street", "country", "postalCode"].includes(name)) {
       setFormData((prev) => ({
         ...prev,
@@ -55,11 +92,15 @@ function PopupsAddClients() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Sending data:", formData);
     const token = localStorage.getItem("token");
+    const url = isEdit
+      ? `http://localhost:5000/api/user/${userData._id}`
+      : "http://localhost:5000/api/user";
+    const method = isEdit ? "PUT" : "POST";
+
     try {
-      const res = await fetch("http://localhost:5000/api/user", {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -69,8 +110,10 @@ function PopupsAddClients() {
 
       const data = await res.json();
       if (res.ok) {
-        toast.success("User created successfully");
-        setOpen(false);
+        toast.success(
+          isEdit ? "User updated successfully" : "User created successfully"
+        );
+        if (onSuccess) onSuccess();
       } else {
         toast.error(`Error: ${data.message}`);
       }
@@ -82,23 +125,20 @@ function PopupsAddClients() {
 
   return (
     <div>
-      <div className="w-full">
-        <ButtonSubmit
-          name="  + Add new Client  "
-          onClick={() => setOpen(true)}
-        />
-      </div>
+      {!isEdit && (
+        <div className="w-full">
+          <ButtonSubmit
+            name="  + Add new Client  "
+            onClick={() => setOpen(true)}
+          />
+        </div>
+      )}
       <ToastContainer position="top-right" autoClose={3000} />
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        fullWidth
-        maxWidth="md"
-      >
+      <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
         <DialogTitle>
-          Add New Client
+          {isEdit ? "Edit Client" : "Add New Client"}
           <IconButton
-            onClick={() => setOpen(false)}
+            onClick={onClose}
             sx={{ position: "absolute", right: 8, top: 8 }}
           >
             <IoMdClose />
@@ -129,21 +169,25 @@ function PopupsAddClients() {
               onChange={handleChange}
               required
             />
-            <TextField
-              label="Email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
+            {!isEdit && (
+              <>
+                <TextField
+                  label="Email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <TextField
+                  label="Password"
+                  name="password"
+                  type="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+              </>
+            )}
             <TextField
               label="Phone"
               name="phone"
@@ -163,7 +207,6 @@ function PopupsAddClients() {
               value={formData.clientWork}
               onChange={handleChange}
             />
-
             <FormControl fullWidth required>
               <Select name="role" value={formData.role} onChange={handleChange}>
                 <MenuItem value="client">Client</MenuItem>
@@ -171,7 +214,6 @@ function PopupsAddClients() {
                 <MenuItem value="admin">Admin</MenuItem>
               </Select>
             </FormControl>
-
             <TextField
               label="City"
               name="city"
@@ -200,9 +242,8 @@ function PopupsAddClients() {
               onChange={handleChange}
               required
             />
-
             <Button type="submit" variant="contained" color="primary">
-              Add Now
+              {isEdit ? "Update Now" : "Add Now"}
             </Button>
           </form>
         </DialogContent>

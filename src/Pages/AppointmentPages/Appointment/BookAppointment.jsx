@@ -7,14 +7,18 @@ import PatientForm from "../../../components/Appointment/PatientForm";
 import ButtonSubmit from "../../../components/Buttons/ButtonSubmit";
 import axios, { getAxiosWithToken } from "../../../api/axiosInstance";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SuccessBookingModal from "../../../components/Modals/successBooking";
 
 const BookAppointment = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const routeDoctor = location.state?.doctor;
+  const routeService = location.state?.service;
 
   const [selectedService, setSelectedService] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
@@ -45,27 +49,49 @@ const BookAppointment = () => {
     }
   };
 
+  // Initialize with route data if available, otherwise fetch services
   useEffect(() => {
-    const fetchServices = async () => {
+    const initializeData = async () => {
       try {
-        const res = await axios.get("/services");
-        const allServices = res.data?.services || [];
-        if (allServices.length > 0) {
-          const defaultService = allServices[0];
-          setSelectedService(defaultService._id);
-          setAmount(defaultService.price || 0);
+        // If we have route service, use it directly
+        if (routeService) {
+          setSelectedService(routeService._id);
+          setAmount(routeService.price || 0);
+        } else {
+          // Otherwise fetch services and set first one as default
+          const res = await axios.get("/services");
+          const allServices = res.data?.services || [];
+          if (allServices.length > 0) {
+            const defaultService = allServices[0];
+            setSelectedService(defaultService._id);
+            setAmount(defaultService.price || 0);
+          }
+        }
+
+        // If we have route doctor, set it and fetch details
+        if (routeDoctor) {
+          setSelectedDoctor(routeDoctor._id);
+          setDoctorDetails(routeDoctor);
         }
       } catch (err) {
         console.error("❌ Failed to fetch services", err);
       }
     };
-    fetchServices();
+
+    initializeData();
     window.scrollTo(0, 0);
-  }, []);
+  }, [routeService, routeDoctor]);
 
   useEffect(() => {
     const fetchPrice = async () => {
       if (!selectedService) return;
+      
+      // If we already have the price from route service, use it
+      if (routeService && routeService._id === selectedService) {
+        setAmount(routeService.price || 0);
+        return;
+      }
+      
       try {
         const res = await axios.get(`/services/${selectedService}`);
         setAmount(res.data?.price || 0);
@@ -75,10 +101,17 @@ const BookAppointment = () => {
       }
     };
     fetchPrice();
-  }, [selectedService]);
+  }, [selectedService, routeService]);
 
   useEffect(() => {
     if (!selectedDoctor) return setDoctorDetails(null);
+    
+    // If we already have doctor details from route, use them
+    if (routeDoctor && routeDoctor._id === selectedDoctor) {
+      setDoctorDetails(routeDoctor);
+      return;
+    }
+    
     const fetchDoctor = async () => {
       try {
         const res = await axios.get(`/doctor/${selectedDoctor}`);
@@ -88,7 +121,7 @@ const BookAppointment = () => {
       }
     };
     fetchDoctor();
-  }, [selectedDoctor]);
+  }, [selectedDoctor, routeDoctor]);
 
   useEffect(() => {
     if (currentUser?.role === "client") {
@@ -368,7 +401,7 @@ useEffect(() => {
       />
 
       {/* Custom Styles */}
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in {
           from {
             opacity: 0;

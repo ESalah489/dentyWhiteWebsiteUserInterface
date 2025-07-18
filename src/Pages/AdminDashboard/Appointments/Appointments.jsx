@@ -1,4 +1,3 @@
-import PopupsAddServices from "../../../components/Popups/PopupsAddServices";
 import AdminTables from "../AdminTables";
 
 const Appointments = () => {

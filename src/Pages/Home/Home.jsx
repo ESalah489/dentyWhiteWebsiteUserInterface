@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import "./Home.css";
 import ButtonSubmit from "../../components/Buttons/ButtonSubmit";
-import ScrollCounter from "../../components/ScrollCounter/ScrollCounter";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { Link } from "react-router-dom";
+import About from "../../components/About/About";
+import Categories from "../../components/Categories/Categories";
+import { Link } from "react-router";
 const Home = () => {
   useEffect(() => {
     AOS.init({
@@ -40,9 +41,9 @@ const Home = () => {
                   </p>
                 </div>
                 <div className="_BtnShop">
-                  <div className="_Btn">
+                  <Link className="_Btn" to={"/services"}>
                     <ButtonSubmit name={"Get Started Now"} />
-                  </div>
+                  </Link>
                   <div className="_Clients">
                     <div className="_Images">
                       <img
@@ -71,142 +72,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-        <div className="_StatusContainer">
-          <div className="container-fluid">
-            <div className="_statusImage">
-              <div className="_Image">
-                <img
-                  src="/src/assets/images/clients/p1.webp"
-                  alt="stats-count image"
-                  data-aos="zoom-in"
-                />
-              </div>
-              <div className="_Image">
-                <img
-                  src="/src/assets/images/clients/p2.webp"
-                  alt="stats-count image"
-                  data-aos="zoom-in"
-                  className="_Unique"
-                />
-              </div>
-            </div>
-            <div className="_TextHero _TextHeroTwo">
-              <div className="_DescText" data-aos="fade-left">
-                <p className="_TitleAbout">About Us</p>
-              </div>
-              <div
-                className="_TitleText"
-                data-aos="fade-left"
-                data-aos-delay="100"
-              >
-                <h2>Professionals and Personalized Dental Excellence</h2>
-              </div>
-              <div
-                className="_DescText"
-                data-aos="fade-left"
-                data-aos-delay="200"
-              >
-                <p>
-                  We offer high-quality dental care tailored for the whole
-                  family. From routine checkups to advanced treatments, our
-                  compassionate team ensures your smile stays healthy and
-                  confident.
-                </p>
-              </div>
-              <div
-                className="_Status"
-                data-aos="fade-left"
-                data-aos-delay="300"
-              >
-                <div className="_allStatus">
-                  <div className="_Owner">
-                    <div className="_Image">
-                      <span
-                        style={{
-                          color: "#4a7cd2",
-                          fontSize: "1.3rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ✔
-                      </span>
-                    </div>
-                    <div className="_Info">
-                      <span className="_statusText">
-                        Personalized Treatment Plans
-                      </span>
-                    </div>
-                  </div>
-                  <div className="_Owner">
-                    <div className="_Image">
-                      <span
-                        style={{
-                          color: "#4a7cd2",
-                          fontSize: "1.3rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ✔
-                      </span>{" "}
-                    </div>
-                    <div className="_Info">
-                      <span className="_statusText">
-                        State-of-the-Art Technology
-                      </span>
-                    </div>
-                  </div>
-                  <div className="_Owner">
-                    <div className="_Image">
-                      <span
-                        style={{
-                          color: "#4a7cd2",
-                          fontSize: "1.3rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ✔
-                      </span>{" "}
-                    </div>
-                    <div className="_Info">
-                      <span className="_statusText">
-                        Gentle Care for Kids and Adults
-                      </span>
-                    </div>
-                  </div>
-                  <div className="_Owner">
-                    <div className="_Image">
-                      <span
-                        style={{
-                          color: "#4a7cd2",
-                          fontSize: "1.3rem",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        ✔
-                      </span>{" "}
-                    </div>
-                    <div className="_Info">
-                      <span className="_statusText">
-                        Flexible Appointment Scheduling{" "}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="_BtnShop">
-                <div
-                  className="_BtnStatus"
-                  data-aos="fade-left"
-                  data-aos-delay="400"
-                >
-                  <Link to="/book-appointment">
-                  <ButtonSubmit name={"Book Appointment"} />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <About />
+        <Categories />
         <div className="_LifeShoping">
           <div className="container-fluid">
             <div
@@ -335,73 +202,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-
-        <div className="_Categories">
-          <div className="container-fluid">
-            <div className="_Title">
-              <span data-aos="fade-down" data-aos-delay="100">
-                Meet Our Dental Team
-              </span>
-              <h2 data-aos="fade-down" data-aos-delay="200">
-                Committed to Your Smile
-              </h2>
-              <p data-aos="fade-down" data-aos-delay="300">
-                Our experienced dental team is here to make every visit positive
-                and personalized. With gentle hands and caring hearts.
-              </p>
-            </div>
-            <div className="_OurCategories">
-              <div className="_OneCard" data-aos="zoom-in" data-aos-delay="200">
-                <img
-                  src="/src/assets/images/Doctors/1.webp"
-                  alt="dessert-bloom image"
-                />
-                <p>
-                  <span>Dr. Sarah Bennett</span>
-                  <span className="_Spatial">Lead Dentist</span>
-                </p>
-              </div>
-              <div className="_OneCard" data-aos="zoom-in" data-aos-delay="200">
-                <img
-                  src="/src/assets/images/Doctors/2.webp"
-                  alt="dessert-bloom image"
-                />
-                <p>
-                  <span>Dr. Maya Lin</span>
-                  <span className="_Spatial">Cosmetic Dentist</span>
-                </p>
-              </div>
-              <div className="_OneCard" data-aos="zoom-in" data-aos-delay="200">
-                <img
-                  src="/src/assets/images/Doctors/3.webp"
-                  alt="dessert-bloom image"
-                />
-                <p>
-                  <span>Dr. Michael Reyes</span>
-                  <span className="_Spatial">Pediatric Specialist</span>
-                </p>
-              </div>
-              <div className="_OneCard" data-aos="zoom-in" data-aos-delay="200">
-                <img
-                  src="/src/assets/images/Doctors/4.webp"
-                  alt="dessert-bloom image"
-                />
-                <p>
-                  <span>Dr. James Carter</span>
-                  <span className="_Spatial">Dental Hygienist</span>
-                </p>
-              </div>
-            </div>
-            <div className="_CountersContainer">
-              <div className="_Counters">
-                <ScrollCounter end={10000} label="Happy Patients" />
-                <ScrollCounter end={2500} label="Teeth Whitened" />
-                <ScrollCounter end={800} label="Dental Implants" />
-                <ScrollCounter end={15} label="Years of Exeperience" />
-              </div>
-            </div>
-          </div>
-        </div>
         <div className="_SaleComponent _Ready">
           <div className="container-fluid">
             <div className="_Title">
@@ -414,11 +214,9 @@ const Home = () => {
               </span>
             </div>
             <div className="_BtnShop">
-              <div className="_BtnReady">
-                <Link to="/book-appointment">
-                  <ButtonSubmit name={"Book Appointment"} />
-                </Link>
-              </div>
+              <Link className="_BtnReady" to={"/services"}>
+                <ButtonSubmit name={"Book Appointment"} />
+              </Link>
             </div>
           </div>
         </div>

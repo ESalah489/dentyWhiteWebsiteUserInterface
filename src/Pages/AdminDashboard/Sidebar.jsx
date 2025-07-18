@@ -111,6 +111,18 @@ const SidebarContent = ({ closeSideMenu }) => (
         closeSideMenu={closeSideMenu}
       />
       <SidebarItem
+        icon={<HiOutlinePhoto />}
+        label="Gallary"
+        to="/layout/gallaryadmin"
+        closeSideMenu={closeSideMenu}
+      />
+      <SidebarItem
+        icon={<HiOutlineWrenchScrewdriver />}
+        label="Categories"
+        to="/layout/categories"
+        closeSideMenu={closeSideMenu}
+      />
+      <SidebarItem
         icon={<HiOutlineCalendarDays />}
         label="Appointments"
         to="/layout/appointments"
@@ -126,12 +138,6 @@ const SidebarContent = ({ closeSideMenu }) => (
         icon={<HiOutlineChatBubbleBottomCenterText />}
         label="Doctors Reviews"
         to="/layout/doctor-reviews"
-        closeSideMenu={closeSideMenu}
-      />
-      <SidebarItem
-        icon={<HiOutlinePhoto />}
-        label="Gallary"
-        to="/gallary"
         closeSideMenu={closeSideMenu}
       />
       <SidebarItem

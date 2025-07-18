@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { HiOutlineCog, HiOutlineLogout, HiOutlineUser } from "react-icons/hi";
+import { HiOutlineUser } from "react-icons/hi";
+import { HiOutlineHome } from "react-icons/hi2";
+import LogOut from "../Auth/LogOut";
 import { FiMenu } from "react-icons/fi";
-
+import { Link } from "react-router";
 const Header = ({ onToggleSidebar }) => {
   const [isProfileMenuOpen, setProfileMenuOpen] = useState(false);
   const toggleProfileMenu = () => setProfileMenuOpen(!isProfileMenuOpen);
@@ -38,31 +40,25 @@ const Header = ({ onToggleSidebar }) => {
                 style={{ backgroundColor: "#ffffffe8" }}
               >
                 <li className="flex">
-                  <a
+                  <Link
+                    to={"/profile"}
                     className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold "
-                    href="#"
                   >
                     <HiOutlineUser className="w-4 h-4 mr-3" />
                     <span>Profile</span>
-                  </a>
+                  </Link>
                 </li>
                 <li className="flex">
-                  <a
+                  <Link
+                    to={"/"}
                     className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold "
-                    href="#"
                   >
-                    <HiOutlineCog className="w-4 h-4 mr-3" />
-                    <span>Settings</span>
-                  </a>
+                    <HiOutlineHome className="w-4 h-4 mr-3" />
+                    <span>Home</span>
+                  </Link>
                 </li>
                 <li className="flex">
-                  <a
-                    className="inline-flex items-center w-full px-2 py-1 text-sm font-semibold"
-                    href="#"
-                  >
-                    <HiOutlineLogout className="w-4 h-4 mr-3" />
-                    <span>Log out</span>
-                  </a>
+                  <LogOut />
                 </li>
               </ul>
             )}
