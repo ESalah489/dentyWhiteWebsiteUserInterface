@@ -125,7 +125,7 @@ const SearchBox = ({ placeholder, fetchSuggestions, onSelect }) => {
             onKeyDown={handleKeyDown}
             onFocus={() => query.trim().length > 2 && setShowSuggestions(true)}
             placeholder={placeholder}
-            className="w-full pl-12 pr-12 py-4 text-base font-medium bg-white border-2 border-gray-200 rounded-xl shadow-sm focus:border-blue-500 focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all duration-300 placeholder-gray-400"
+            className="w-full pl-12 pr-12 py-4 text-base font-medium bg-white border border-gray-200 rounded-xl shadow-sm focus:border focus:ring-4 focus:ring-blue-100 focus:outline-none transition-all duration-300 placeholder-gray-400"
           />
 
           {/* Loading Spinner */}

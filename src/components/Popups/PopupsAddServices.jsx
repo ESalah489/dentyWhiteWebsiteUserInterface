@@ -118,9 +118,11 @@ function PopupsAddServices({
 
     try {
       const token = localStorage.getItem("token");
-      console.log(serviceData._id);
 
-      const url = isEdit ? `/services/${serviceData._id}` : "/services";
+      const url =
+        isEdit && serviceData?._id
+          ? `/services/${serviceData._id}`
+          : "/services";
       const method = isEdit ? "put" : "post";
 
       await axios[method](url, data, {
