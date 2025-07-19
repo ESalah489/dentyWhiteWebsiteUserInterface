@@ -10,15 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@date-io/date-fns": "^3.2.1",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@material-tailwind/react": "^2.1.10",
+    "@mui/lab": "^7.0.0-beta.14",
     "@mui/material": "^7.2.0",
+    "@mui/x-date-pickers": "^8.8.0",
     "@tailwindcss/vite": "^4.1.11",
     "aos": "^2.3.4",
     "axios": "^1.10.0",
     "boxicons": "^2.1.4",
     "chart.js": "^4.5.0",
+    "date-fns": "^4.1.0",
+    "dayjs": "^1.11.13",
     "framer-motion": "^12.23.6",
     "lodash": "^4.17.21",
     "react": "^19.1.0",
@@ -27,7 +32,8 @@
     "react-router": "^7.6.3",
     "react-router-dom": "^7.6.3",
     "react-toastify": "^11.0.5",
-    "sweetalert2": "^11.22.2"
+    "sweetalert2": "^11.22.2",
+    "toast": "^0.5.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",

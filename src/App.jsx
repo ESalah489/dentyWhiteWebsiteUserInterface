@@ -31,6 +31,16 @@ import ContactUs from "./Pages/ContactUs/ContactUs";
 import GalleryAdmin from "./Pages/AdminDashboard/Gallary/GallaryAdmin";
 import Profile from "./Pages/Profiles/Profile";
 import Information from "./Pages/Profiles/Information/Information";
+
+
+
+import BookAppointment from "./Pages/AppointmentPages/Appointment/BookAppointment"
+import MyAppointments from "./Pages/AppointmentPages/MyAppointments/MyAppointments";
+import CreatePayment from "./Pages/PaymentPages/CreatePayment";
+import SuccessPayment from "./Pages/PaymentPages/SuccessPayment";
+import FailedPayment from "./Pages/PaymentPages/FailedPayment";
+import SelectPaymentMethod from "./Pages/PaymentPages/SelectPaymentMethod";
+
 function App() {
   const location = useLocation();
   const hideNavbarOnRoutes = [
@@ -98,6 +108,13 @@ function App() {
           </Route>
         </Route>
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/book-appointment" element={<BookAppointment />} />
+        <Route path="/my-appointments" element={<MyAppointments />} />
+        <Route path="/payment/create/:appointmentId/:gateway" element={<CreatePayment />} />
+        <Route path="/payment/success" element={<SuccessPayment />} />
+        <Route path="/payment/failure" element={<FailedPayment />} />
+        <Route path="/payment/method/:appointmentId" element={<SelectPaymentMethod />} />
+
         <Route path="*" element={<Notfound />} />
       </Routes>
       {!shouldHideNavbar && <Footer />}

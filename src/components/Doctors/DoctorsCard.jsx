@@ -11,7 +11,7 @@ const DoctorCard = ({ doctor, size = "large", service, showBooking = false }) =>
 
   const handleBooking = (e) => {
     e.stopPropagation(); 
-    navigate("/booking", { state: { doctor, service } });
+    navigate("/book-appointment", { state: { doctor, service } });
   };
 
   return (

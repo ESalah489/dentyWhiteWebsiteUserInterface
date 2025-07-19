@@ -104,7 +104,7 @@ const NavBar = () => {
             {isAuth() ? (
               <DropdownList
                 element={<FaRegCircleUser />}
-                items={["Profile", "Apportment", "Dashboard"]}
+                items={["Profile", "My Appoitments", "Dashboard"]}
               />
             ) : (
               false
