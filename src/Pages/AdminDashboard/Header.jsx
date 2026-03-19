@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { HiOutlineUser } from "react-icons/hi";
 import { HiOutlineHome } from "react-icons/hi2";
 import LogOut from "../Auth/LogOut";
+import Doctor1 from "../../assets/images/Doctors/1.webp";
 import { FiMenu } from "react-icons/fi";
 import { Link } from "react-router";
 const Header = ({ onToggleSidebar }) => {
@@ -30,7 +31,7 @@ const Header = ({ onToggleSidebar }) => {
             >
               <img
                 className="object-cover w-8 h-8 rounded-full"
-                src="/src/assets/images/Doctors/1.webp"
+                src={Doctor1}
                 alt="profile"
               />
             </button>

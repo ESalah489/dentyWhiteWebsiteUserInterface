@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import image401 from "../../assets/images/Rolesimages/401.svg";
+
 function Unauthorized() {
   return (
     <>
@@ -39,7 +41,7 @@ function Unauthorized() {
           <div className="relative w-full mt-12 lg:w-1/2 lg:mt-0">
             <img
               className="w-full max-w-lg lg:mx-auto"
-              src="/src/assets/images/Rolesimages/401.svg"
+              src={image401}
               alt=""
             />
           </div>

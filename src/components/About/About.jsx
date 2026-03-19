@@ -3,7 +3,8 @@ import "../../Pages/Home/Home.css";
 import ButtonSubmit from "../Buttons/ButtonSubmit";
 import AOS from "aos";
 import { Link } from "react-router";
-
+import p1 from "../../assets/images/clients/p1.webp"
+import p2 from "../../assets/images/clients/p2.webp"
 const About = () => {
   useEffect(() => {
     AOS.init({
@@ -18,14 +19,14 @@ const About = () => {
           <div className="_statusImage">
             <div className="_Image">
               <img
-                src="/src/assets/images/clients/p1.webp"
+                src={p1}
                 alt="stats-count image"
                 data-aos="zoom-in"
               />
             </div>
             <div className="_Image">
               <img
-                src="/src/assets/images/clients/p2.webp"
+                src={p2}
                 alt="stats-count image"
                 data-aos="zoom-in"
                 className="_Unique"

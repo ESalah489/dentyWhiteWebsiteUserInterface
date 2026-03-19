@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import illustration from "../../assets/images/Rolesimages/illustration.svg";
+
 function Notfound() {
   return (
     <>
@@ -40,7 +42,7 @@ function Notfound() {
           <div className="relative w-full mt-12 lg:w-1/2 lg:mt-0">
             <img
               className="w-full max-w-lg lg:mx-auto"
-              src="/src/assets/images/Rolesimages/illustration.svg"
+              src={illustration}
               alt=""
             />
           </div>

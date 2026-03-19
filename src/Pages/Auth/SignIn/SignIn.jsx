@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../Shared.css";
 import "boxicons/css/boxicons.min.css";
 import ButtonSubmit from "../../../components/Buttons/ButtonSubmit";
+import c2 from "../../../assets/images/c2.webp";
+
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../../../api/axiosInstance";
 import { toast, ToastContainer } from "react-toastify";
@@ -87,7 +89,7 @@ export function SignIn() {
 
         <div className="_image">
           <div className="_Ima">
-            <img src="/src/assets/images/c2.webp" alt="teeth image" />
+            <img src={c2} alt="teeth image" />
           </div>
           <div className="_Title">
             <h3>Welcome Back</h3>

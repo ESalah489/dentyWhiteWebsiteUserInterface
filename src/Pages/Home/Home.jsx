@@ -6,6 +6,17 @@ import "aos/dist/aos.css";
 import About from "../../components/About/About";
 import Categories from "../../components/Categories/Categories";
 import { Link } from "react-router";
+import u1 from "../../assets/images/users/1.webp";
+import u2 from "../../assets/images/users/2.webp";
+import u3 from "../../assets/images/users/3.webp";
+import c2 from "../../assets/images/c2.webp";
+
+import tooth1 from "../../assets/images/Icons/tooth-1.png";
+import tooth2 from "../../assets/images/Icons/tooth-2.png";
+import tooth3 from "../../assets/images/Icons/tooth-3.png";
+import tooth4 from "../../assets/images/Icons/tooth-4.png";
+
+
 const Home = () => {
   useEffect(() => {
     AOS.init({
@@ -47,15 +58,15 @@ const Home = () => {
                   <div className="_Clients">
                     <div className="_Images">
                       <img
-                        src="/src/assets/images/users/1.webp"
+                        src={u1}
                         alt="user one"
                       />
                       <img
-                        src="/src/assets/images/users/2.webp"
+                        src={u2}
                         alt="user two"
                       />
                       <img
-                        src="/src/assets/images/users/3.webp"
+                        src={u3}
                         alt="user three"
                       />
                     </div>
@@ -67,7 +78,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="_ImageHero">
-                <img src="/src/assets/images/c2.webp" alt="teeth image" />
+                <img src={c2} alt="teeth image" />
               </div>
             </div>
           </div>
@@ -84,7 +95,7 @@ const Home = () => {
               <div className="_Image">
                 <div className="_ImageContainer">
                   <img
-                    src="/src/assets/images/Icons/tooth-1.png"
+                    src={tooth1}
                     alt="General Dentistry image"
                   />
                 </div>
@@ -115,7 +126,7 @@ const Home = () => {
               <div className="_Image">
                 <div className="_ImageContainer">
                   <img
-                    src="/src/assets/images/Icons/tooth-2.png"
+                    src={tooth2}
                     alt="Cosmetic Dentistry image"
                   />
                 </div>
@@ -146,7 +157,7 @@ const Home = () => {
               <div className="_Image">
                 <div className="_ImageContainer">
                   <img
-                    src="/src/assets/images/Icons/tooth-3.png"
+                    src={tooth3}
                     alt="Pediatric Dentistry image"
                   />
                 </div>
@@ -177,7 +188,7 @@ const Home = () => {
               <div className="_Image">
                 <div className="_ImageContainer">
                   <img
-                    src="/src/assets/images/Icons/tooth-4.png"
+                    src={tooth4}
                     alt="Restorative Dentistry image"
                   />
                 </div>
