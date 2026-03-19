@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://denty-white-website-back-end.vercel.app/api",
   withCredentials: true,
 });
 
@@ -9,7 +9,7 @@ export default axiosInstance;
 
 export const getAxiosWithToken = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:5000/api",
+    baseURL: "https://denty-white-website-back-end.vercel.app/api",
     withCredentials: true,
   });
 
